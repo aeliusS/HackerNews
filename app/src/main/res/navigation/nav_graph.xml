@@ -9,5 +9,14 @@
         android:id="@+id/newsListFragment"
         android:name="com.example.android.hackernews.newslist.NewsListFragment"
         android:label="NewsListFragment"
-        tools:layout="@layout/fragment_news"/>
+        tools:layout="@layout/fragment_news">
+        <action
+            android:id="@+id/action_newsListFragment_to_settingsActivity"
+            app:destination="@id/settingsActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/settingsActivity"
+        android:name="com.example.android.hackernews.settings.SettingsActivity"
+        android:label="SettingsActivity"
+        tools:layout="@layout/activity_settings"/>
 </navigation>

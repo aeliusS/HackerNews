@@ -11,6 +11,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true">
+            <!-- TODO: apply app:liftOnScrollTargetViewId to AppBarLayout  -->
+            <!-- https://m3.material.io/components/top-app-bar/implementation -->
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/topAppBar"
