@@ -4,6 +4,8 @@ buildscript {
         nav_version = '2.5.2'
         hilt_version = '2.44'
         work_version = '2.7.1'
+        room_version = '2.4.3'
+        coroutines_version = '1.6.4'
     }
 }
 
