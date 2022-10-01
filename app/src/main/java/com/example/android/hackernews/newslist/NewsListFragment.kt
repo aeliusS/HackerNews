@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.android.hackernews.R
+import com.example.android.hackernews.databinding.ActivityMainBinding
 import com.example.android.hackernews.databinding.FragmentNewsBinding
+import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +32,13 @@ class NewsListFragment: Fragment() {
         // Set the lifecycle owner to the lifecycle of the view
         binding.lifecycleOwner = this.viewLifecycleOwner
         setupMenuOptions()
+
+        // TODO: set the liftOnScrollTargetViewId
+        /*
+        requireActivity()
+            .findViewById<AppBarLayout>(R.id.appBarLayout)
+            .liftOnScrollTargetViewId
+         */
     }
 
     private fun setupMenuOptions() {
@@ -46,7 +55,7 @@ class NewsListFragment: Fragment() {
                     R.id.filter_news -> true
                     R.id.settings -> {
                         findNavController().navigate(
-                            NewsListFragmentDirections.actionNewsListFragmentToSettingsActivity()
+                            NewsListFragmentDirections.actionNewsListFragmentToSettingsFragment()
                         )
                         true
                     }
