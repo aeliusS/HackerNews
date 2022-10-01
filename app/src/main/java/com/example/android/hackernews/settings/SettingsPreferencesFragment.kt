@@ -27,4 +27,7 @@ class SettingsPreferencesFragment : PreferenceFragmentCompat() {
         Log.d(TAG, "notification new value is $newValue")
         true
     }
+
+    // TODO: Implement dynamic theming
+    // https://medium.com/@nihitb06.dev/implementing-dynamic-theming-in-android-a9ed4f5010a8
 }
