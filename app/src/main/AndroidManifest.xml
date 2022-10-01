@@ -14,7 +14,7 @@
         android:theme="@style/Theme.HackerNews"
         tools:targetApi="33">
         <activity
-            android:name=".NewsActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

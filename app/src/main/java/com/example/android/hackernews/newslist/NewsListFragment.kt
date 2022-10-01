@@ -1,11 +1,11 @@
 package com.example.android.hackernews.newslist
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.android.hackernews.R
 import com.example.android.hackernews.databinding.FragmentNewsBinding
@@ -21,23 +21,37 @@ class NewsListFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentNewsBinding.inflate(inflater, container, false)
-
-        binding.topAppBar.setOnMenuItemClickListener {handleMenuItems(it)}
         return binding.root
     }
 
-    // TODO: finish menu
-    private fun handleMenuItems(menu: MenuItem): Boolean {
-        return when (menu.itemId) {
-            R.id.search -> true
-            R.id.filter_news -> true
-            R.id.settings -> {
-                findNavController().navigate(
-                    NewsListFragmentDirections.actionNewsListFragmentToSettingsActivity()
-                )
-                true
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Set the lifecycle owner to the lifecycle of the view
+        binding.lifecycleOwner = this.viewLifecycleOwner
+        setupMenuOptions()
+    }
+
+    private fun setupMenuOptions() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.news_fragment_menu, menu)
             }
-            else -> false
-        }
+
+            // TODO: finish menu
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
+                when (menuItem.itemId) {
+                    R.id.search -> true
+                    R.id.filter_news -> true
+                    R.id.settings -> {
+                        findNavController().navigate(
+                            NewsListFragmentDirections.actionNewsListFragmentToSettingsActivity()
+                        )
+                        true
+                    }
+                    else -> false
+                }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 }

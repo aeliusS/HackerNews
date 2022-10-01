@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/newsListFragment"
         android:name="com.example.android.hackernews.newslist.NewsListFragment"
-        android:label="NewsListFragment"
+        android:label="News"
         tools:layout="@layout/fragment_news">
         <action
             android:id="@+id/action_newsListFragment_to_settingsActivity"
@@ -17,6 +17,6 @@
     <activity
         android:id="@+id/settingsActivity"
         android:name="com.example.android.hackernews.settings.SettingsActivity"
-        android:label="SettingsActivity"
+        android:label="Settings"
         tools:layout="@layout/activity_settings"/>
 </navigation>
