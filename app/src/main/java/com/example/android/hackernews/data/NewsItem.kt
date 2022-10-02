@@ -5,10 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "news_items")
-data class NewsItems(
+data class NewsItem(
     @PrimaryKey val id: Long,
     @ColumnInfo val deleted: Boolean = false,
-    @ColumnInfo val type: String = "none",
+    @ColumnInfo val type: String?,
     @ColumnInfo(name = "by") val author: String?,
     @ColumnInfo val time: Long?,
     @ColumnInfo val text: String?,

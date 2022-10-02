@@ -9,10 +9,10 @@ import androidx.room.TypeConverters
 /**
  * The Room database for this app
  * */
-@Database(entities = [NewsItems::class], version = 1, exportSchema = false)
+@Database(entities = [NewsItem::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun newsItemsDao(): NewsItemsDao
+    abstract fun newsItemDao(): NewsItemDao
 
     companion object {
         // for singleton instantiation
@@ -27,6 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, "hacker-news-db")
+                .fallbackToDestructiveMigration() // TODO: remove before release
                 .build()
         }
     }

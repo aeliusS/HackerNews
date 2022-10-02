@@ -5,10 +5,10 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 /**
- * The Data Access Object for the [NewsItems] class.
+ * The Data Access Object for the [NewsItem] class.
  */
 @Dao
-interface NewsItemsDao {
+interface NewsItemDao {
     @Query("SELECT * FROM news_items WHERE parent is null")
-    fun getAllItems(): Flow<List<NewsItems>>
+    fun getAllItems(): Flow<List<NewsItem>>
 }
