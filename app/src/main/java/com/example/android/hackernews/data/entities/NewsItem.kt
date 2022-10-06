@@ -1,15 +1,20 @@
-package com.example.android.hackernews.data
+package com.example.android.hackernews.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 @Entity(tableName = "news_items")
 data class NewsItem(
     @PrimaryKey val id: Long,
     @ColumnInfo val deleted: Boolean = false,
     @ColumnInfo val type: String?,
-    @ColumnInfo(name = "by") val author: String?,
+    @Json(name = "by")
+    @ColumnInfo(name = "by")
+    val author: String?,
     @ColumnInfo val time: Long?,
     @ColumnInfo val text: String?,
     @ColumnInfo val dead: Boolean = false,

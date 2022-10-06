@@ -1,5 +1,6 @@
 package com.example.android.hackernews.api
 
+import com.example.android.hackernews.data.entities.NewsItem
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -21,7 +22,7 @@ interface HackerNewsService {
     suspend fun getNewStories(): List<Long>
 
     @GET("v0/item/{item_id}.json")
-    suspend fun getNewsItem(@Path(value = "item_id", encoded = true) itemId: Long): NetworkNewsItem
+    suspend fun getNewsItem(@Path(value = "item_id", encoded = true) itemId: Long): NewsItem
 
     companion object {
         private const val BASE_URL = "https://hacker-news.firebaseio.com/"

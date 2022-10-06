@@ -2,7 +2,7 @@ package com.example.android.hackernews.di
 
 import android.content.Context
 import com.example.android.hackernews.data.AppDatabase
-import com.example.android.hackernews.data.NewsItemDao
+import com.example.android.hackernews.data.daos.NewsItemDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

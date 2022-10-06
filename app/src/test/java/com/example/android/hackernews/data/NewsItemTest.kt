@@ -1,5 +1,6 @@
 package com.example.android.hackernews.data
 
+import com.example.android.hackernews.data.entities.NewsItem
 import org.junit.Test
 import org.junit.Assert.assertFalse
 
