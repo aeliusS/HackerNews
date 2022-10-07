@@ -70,6 +70,8 @@ dependencies {
 
     // co-routines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
 
     // moshi
     implementation 'com.squareup.moshi:moshi:1.13.0'

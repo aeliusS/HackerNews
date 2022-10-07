@@ -1,4 +1,4 @@
-package com.example.android.hackernews.data
+package com.example.android.hackernews.data.entities
 
 import com.example.android.hackernews.data.entities.NewsItem
 import org.junit.Test

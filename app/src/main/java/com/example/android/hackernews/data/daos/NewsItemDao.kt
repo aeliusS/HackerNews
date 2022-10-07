@@ -16,6 +16,9 @@ interface NewsItemDao {
     @Query("SELECT * FROM news_items WHERE id = :itemId")
     fun getItem(itemId: Long): Flow<NewsItem>
 
+    @Query("SELECT * FROM news_items WHERE id IN (:newsItems)")
+    fun getItems(newsItems: List<Long>): Flow<List<NewsItem>>
+
     @Transaction
     @Query(NEWS_ITEMS_TOP_STORIES)
     fun getTopStories(): Flow<List<NewsItem>>
