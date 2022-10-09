@@ -19,13 +19,13 @@ data class TopStories(
 @Entity(tableName = "new_stories")
 data class NewStories(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") override val id: Long = 0,
+    @ColumnInfo(name = "id") override val id: Long = 0L,
     @ColumnInfo(name = "item_id") override val itemId: Long
 ): NewsEntity
 
 @Entity(tableName = "best_stories")
 data class BestStories(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id") override val id: Long = 0,
+    @ColumnInfo(name = "id") override val id: Long = 0L,
     @ColumnInfo(name = "item_id") override val itemId: Long
 ): NewsEntity

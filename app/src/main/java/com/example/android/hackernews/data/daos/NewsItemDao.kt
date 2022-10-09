@@ -16,8 +16,8 @@ interface NewsItemDao {
     @Query("SELECT * FROM news_items WHERE id = :itemId")
     fun getItem(itemId: Long): Flow<NewsItem>
 
-    @Query("SELECT * FROM news_items WHERE id IN (:newsItems)")
-    fun getItems(newsItems: List<Long>): Flow<List<NewsItem>>
+    @Query("SELECT * FROM news_items WHERE id IN (:itemIds)")
+    fun getItems(itemIds: List<Long>): Flow<List<NewsItem>>
 
     @Transaction
     @Query(NEWS_ITEMS_TOP_STORIES)
@@ -30,6 +30,9 @@ interface NewsItemDao {
     @Transaction
     @Query(NEWS_ITEMS_BEST_STORIES)
     fun getBestStories(): Flow<List<NewsItem>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertItem(newsItem: NewsItem)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(newsItems: List<NewsItem>)

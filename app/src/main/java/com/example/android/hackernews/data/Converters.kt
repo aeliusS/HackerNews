@@ -8,7 +8,7 @@ import com.squareup.moshi.adapter
 /**
  * Type converters to allow Room to reference complex data types
  * */
-class Converters {
+object Converters {
     private val moshi: Moshi = Moshi.Builder().build()
     @OptIn(ExperimentalStdlibApi::class)
     private val jsonAdapter: JsonAdapter<List<Long>> = moshi.adapter()

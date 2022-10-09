@@ -1,4 +1,4 @@
-package com.example.android.hackernews.data
+package com.example.android.hackernews.data.repositories
 
 import com.example.android.hackernews.data.daos.NewsItemDao
 import com.example.android.hackernews.di.IoDispatcher
@@ -10,7 +10,7 @@ import javax.inject.Singleton
  * Repository for handling data operations
  * */
 @Singleton
-class NewsRepository @Inject constructor(
+class NewsLocalDataSource @Inject constructor(
     private val newsItemDao: NewsItemDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
@@ -20,11 +20,11 @@ class NewsRepository @Inject constructor(
     companion object {
         // for singleton instantiation
         @Volatile
-        private var instance: NewsRepository? = null
+        private var instance: NewsLocalDataSource? = null
 
         fun getInstance(newsItemDao: NewsItemDao, ioDispatcher: CoroutineDispatcher) {
             instance ?: synchronized(this) {
-                instance ?: NewsRepository(newsItemDao, ioDispatcher).also { instance = it }
+                instance ?: NewsLocalDataSource(newsItemDao, ioDispatcher).also { instance = it }
             }
         }
     }
