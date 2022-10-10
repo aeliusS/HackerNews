@@ -1,10 +1,12 @@
 package com.example.android.hackernews.newslist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.android.hackernews.R
@@ -16,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class NewsListFragment: Fragment() {
     private lateinit var binding: FragmentNewsBinding
+    private val viewModel: NewsListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +42,11 @@ class NewsListFragment: Fragment() {
             .findViewById<AppBarLayout>(R.id.appBarLayout)
             .liftOnScrollTargetViewId
          */
+        // TODO: remove after testing
+        viewModel.topStories.observe(viewLifecycleOwner) {
+            Log.d(TAG, "Number of top stories: ${it.size}")
+        }
+
     }
 
     private fun setupMenuOptions() {
@@ -62,5 +70,9 @@ class NewsListFragment: Fragment() {
                     else -> false
                 }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    companion object {
+        private const val TAG = "NewsListFragment"
     }
 }

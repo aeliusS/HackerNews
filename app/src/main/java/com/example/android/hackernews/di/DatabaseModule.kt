@@ -3,6 +3,7 @@ package com.example.android.hackernews.di
 import android.content.Context
 import com.example.android.hackernews.data.AppDatabase
 import com.example.android.hackernews.data.daos.NewsItemDao
+import com.example.android.hackernews.data.daos.TopStoryDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,5 +24,10 @@ class DatabaseModule {
     @Provides
     fun provideNewsItemDao(appDatabase: AppDatabase): NewsItemDao {
         return appDatabase.newsItemDao()
+    }
+
+    @Provides
+    fun provideTopStoriesDao(appDatabase: AppDatabase): TopStoryDao {
+        return appDatabase.topStoriesDao()
     }
 }

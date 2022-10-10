@@ -6,14 +6,13 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface HackerNewsService {
 
     @GET("v0/topstories.json")
-    suspend fun getTopStories(): List<Long>
+    suspend fun getTopStoryIds(): List<Long>
 
     @GET("v0/beststories.json")
     suspend fun getBestStories(): List<Long>
