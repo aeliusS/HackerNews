@@ -22,6 +22,10 @@ class DefaultNewsRepository @Inject constructor(
         Log.d(TAG, "DefaultNewsRepository initiated")
     }
 
+    suspend fun getTopStoryUpdateDate() = withContext(ioDispatcher) {
+        newsLocalDataSource.getTopStoryUpdateDate()
+    }
+
     suspend fun updateTopStoryIdsFromRemoteService() = withContext(ioDispatcher) {
         wrapEspressoIdlingResource {
             val topStoryIds = service.getTopStoryIds().toTopStories()
@@ -35,7 +39,7 @@ class DefaultNewsRepository @Inject constructor(
             val topStoryIds = newsLocalDataSource.getTopStoryIds()
             for (topStoryId in topStoryIds) {
                 val newsItem = service.getNewsItem(topStoryId.itemId)
-                newsLocalDataSource.addNewsItem(newsItem)
+                newsLocalDataSource.addUpdateNewsItem(newsItem)
             }
 
         }

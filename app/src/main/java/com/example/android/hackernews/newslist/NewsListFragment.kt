@@ -1,6 +1,7 @@
 package com.example.android.hackernews.newslist
 
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.util.Log
 import android.view.*
 import androidx.core.view.MenuHost
@@ -14,6 +15,7 @@ import com.example.android.hackernews.databinding.ActivityMainBinding
 import com.example.android.hackernews.databinding.FragmentNewsBinding
 import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class NewsListFragment: Fragment() {
@@ -36,12 +38,20 @@ class NewsListFragment: Fragment() {
         binding.lifecycleOwner = this.viewLifecycleOwner
         setupMenuOptions()
 
-        // TODO: set the liftOnScrollTargetViewId
+        binding.viewModel = viewModel
+
+        val adapter = NewsListAdapter(NewsClickListener { newsItem ->
+            Log.d(TAG, "news item id: ${newsItem.id} clicked")
+        })
+        binding.newsListRecyclerView.adapter = adapter
+
         /*
+        // set lift on scroll view id
         requireActivity()
             .findViewById<AppBarLayout>(R.id.appBarLayout)
-            .liftOnScrollTargetViewId
+            .liftOnScrollTargetViewId = binding.newsListRecyclerView.id
          */
+
         // TODO: remove after testing
         viewModel.topStories.observe(viewLifecycleOwner) {
             Log.d(TAG, "Number of top stories: ${it.size}")

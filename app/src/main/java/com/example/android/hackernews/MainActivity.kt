@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Displaying edge-to-edge
-        // WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         binding = setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         setSupportActionBar(binding.topAppBar)

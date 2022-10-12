@@ -12,6 +12,9 @@ import java.util.Calendar
 @Dao
 interface TopStoryDao {
 
+    @Query("SELECT item_date FROM top_stories LIMIT 1")
+    suspend fun getUpdateDate(): Calendar?
+
     @Query("SELECT * FROM top_stories WHERE item_date IS NOT NULL")
     suspend fun getTopStoryIds(): List<TopStory>
 
