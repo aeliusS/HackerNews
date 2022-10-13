@@ -31,6 +31,17 @@ interface NewsItemDao {
         }
     }
 
+    // only use to setup tests. This has performance hit for large lists
+    suspend fun upsertItems(newsItems: List<NewsItem>) {
+        newsItems.forEach {
+            try {
+                insertItem(it)
+            } catch (e: SQLiteConstraintException) {
+                updateItem(it.toUpdate())
+            }
+        }
+    }
+
     @Query(REMOVE_STALE_NEWS)
     suspend fun removeStaleStories()
 

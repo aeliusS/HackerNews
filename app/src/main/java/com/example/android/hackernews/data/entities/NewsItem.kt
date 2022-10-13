@@ -20,21 +20,21 @@ import java.util.Calendar
 data class NewsItem(
     @PrimaryKey val id: Long,
     @ColumnInfo val deleted: Boolean = false,
-    @ColumnInfo val type: String?,
+    @ColumnInfo val type: String? = null,
     @Json(name = "by")
     @ColumnInfo(name = "by")
-    val author: String?,
-    @ColumnInfo val time: Long?, // unix time
-    @ColumnInfo val text: String?,
+    val author: String? = null,
+    @ColumnInfo val time: Long? = null, // unix time
+    @ColumnInfo val text: String? = null,
     @ColumnInfo val dead: Boolean = false,
-    @ColumnInfo val parent: Long?,
-    @ColumnInfo val poll: Long?,
-    @ColumnInfo val kids: List<Long>?,
-    @ColumnInfo val url: String?,
-    @ColumnInfo val score: Int?,
-    @ColumnInfo val title: String?,
-    @ColumnInfo val parts: List<Long>?,
-    @ColumnInfo val descendants: Int?, // number of comments
+    @ColumnInfo val parent: Long? = null,
+    @ColumnInfo val poll: Long? = null,
+    @ColumnInfo val kids: List<Long>? = null,
+    @ColumnInfo val url: String? = null,
+    @ColumnInfo val score: Int? = null,
+    @ColumnInfo val title: String? = null,
+    @ColumnInfo val parts: List<Long>? = null,
+    @ColumnInfo val descendants: Int? = null, // number of comments
 
     // additional custom field
     @ColumnInfo val bookmarked: Boolean = false

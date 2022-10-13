@@ -28,12 +28,15 @@ class NewsListViewModel @Inject internal constructor(
         updateTopStories()
     }
 
+    // TODO: add updating notification
+
     private fun updateTopStories() {
         viewModelScope.launch {
             if (!shouldUpdateTopStories()) return@launch
             Log.d(TAG, "updating top stories")
             newsRepository.updateTopStoryIdsFromRemoteService()
             newsRepository.updateTopStories()
+            // newsRepository.updateTopStoriesWithComments() // too expensive
         }
     }
 
