@@ -7,5 +7,6 @@
     <string name="filter_news">Filter News</string>
     <string name="content_description_filter_news">Filter the news</string>
     <string name="divider_text">|</string>
+    <string name="divider_bubble">•</string>
     <string name="link_image_description">Link to article or story</string>
 </resources>

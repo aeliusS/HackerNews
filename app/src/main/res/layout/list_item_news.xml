@@ -14,108 +14,115 @@
             type="com.example.android.hackernews.newslist.NewsClickListener" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimaryContainer"
-        android:onClick="@{() -> clickListener.onClick(newsItem)}">
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        app:cardCornerRadius="4dp">
 
-        <TextView
-            android:id="@+id/titleText"
-            style="@style/TextAppearance.TitleText"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_small"
-            android:text="@{newsItem.titleSpanned}"
-            app:layout_constraintEnd_toStartOf="@+id/linkImage"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Layout Breakouts with CSS Grid" />
+            android:background="?attr/colorPrimaryContainer"
+            android:onClick="@{() -> clickListener.onClick(newsItem)}">
 
-        <TextView
-            android:id="@+id/pointsText"
-            style="@style/TextAppearance.BodySmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:text='@{String.valueOf(newsItem.score ?? 0) + " points"}'
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleText"
-            tools:text="191 points" />
+            <TextView
+                android:id="@+id/titleText"
+                style="@style/TextAppearance.TitleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_small"
+                android:text="@{newsItem.titleSpanned}"
+                app:layout_constraintEnd_toStartOf="@+id/linkImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Layout Breakouts with CSS Grid" />
 
-        <TextView
-            android:id="@+id/authorText"
-            style="@style/TextAppearance.BodySmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_extra_small"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:text='@{"by " + newsItem.author ?? "~UNKNOWN~"}'
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/pointsText"
-            app:layout_constraintTop_toBottomOf="@+id/titleText"
-            tools:text="by solene" />
+            <TextView
+                android:id="@+id/pointsText"
+                style="@style/TextAppearance.BodySmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text='@{String.valueOf(newsItem.score ?? 0) + " points"}'
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleText"
+                tools:text="191 points" />
 
-        <TextView
-            android:id="@+id/timeText"
-            style="@style/TextAppearance.BodySmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_extra_small"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:text="@{newsItem.timeString}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/authorText"
-            app:layout_constraintTop_toBottomOf="@+id/titleText"
-            tools:text="0 minutes ago" />
+            <TextView
+                android:id="@+id/authorText"
+                style="@style/TextAppearance.BodySmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_extra_small"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text='@{"by " + newsItem.author ?? "~UNKNOWN~"}'
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/pointsText"
+                app:layout_constraintTop_toBottomOf="@+id/titleText"
+                tools:text="by solene" />
 
-        <TextView
-            android:id="@+id/dividerText"
-            style="@style/TextAppearance.BodySmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_extra_small"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:text="@string/divider_text"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/timeText"
-            app:layout_constraintTop_toBottomOf="@+id/titleText" />
+            <TextView
+                android:id="@+id/timeText"
+                style="@style/TextAppearance.BodySmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_extra_small"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text="@{newsItem.timeString}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/authorText"
+                app:layout_constraintTop_toBottomOf="@+id/titleText"
+                tools:text="0 minutes ago" />
 
-        <TextView
-            android:id="@+id/commentText"
-            style="@style/TextAppearance.BodySmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_extra_small"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_small"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:text='@{String.valueOf(newsItem.descendants ?? 0) + " comments"}'
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/linkImage"
-            app:layout_constraintStart_toEndOf="@+id/dividerText"
-            app:layout_constraintTop_toBottomOf="@+id/titleText"
-            tools:text="33 comments" />
+            <TextView
+                android:id="@+id/dividerText"
+                style="@style/TextAppearance.BodySmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_extra_small"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text="@string/divider_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/timeText"
+                app:layout_constraintTop_toBottomOf="@+id/titleText" />
 
-        <ImageView
-            android:id="@+id/linkImage"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:background="?attr/colorTertiary"
-            android:contentDescription="@string/link_image_description"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:linkIcon="@{newsItem.url}"
-            app:srcCompat="@drawable/ic_baseline_link_50"
-            app:tint="?attr/colorTertiaryContainer" />
+            <TextView
+                android:id="@+id/commentText"
+                style="@style/TextAppearance.BodySmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_extra_small"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text='@{String.valueOf(newsItem.descendants ?? 0) + " comments"}'
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/linkImage"
+                app:layout_constraintStart_toEndOf="@+id/dividerText"
+                app:layout_constraintTop_toBottomOf="@+id/titleText"
+                tools:text="33 comments" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/linkImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/link_image_description"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_comment_35"
+                app:tint="?attr/colorTertiary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>
