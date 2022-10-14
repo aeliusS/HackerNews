@@ -48,6 +48,15 @@ data class NewsItem(
         }
     }
 
+    fun textSpanned(): Spanned {
+        if (text == null) return "~NO COMMENT~".toSpanned()
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        }
+    }
+
     fun timeString(): CharSequence {
         if (time == null) return "unknown time ago"
         return DateUtils.getRelativeTimeSpanString(

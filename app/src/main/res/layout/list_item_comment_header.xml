@@ -1,6 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="newsItem"
+            type="com.example.android.hackernews.data.entities.NewsItem" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorSecondaryContainer">
+
+    <TextView
+        android:id="@+id/titleText"
+        style="@style/TextAppearance.TitleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:text="@{newsItem.titleSpanned}"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Layout Breakouts with CSS Grid" />
+
+    <TextView
+        android:id="@+id/urlText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_extra_small"
+        app:displayURL="@{newsItem.url}"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleText"
+        tools:text="css-tricks.com" />
+
+    <TextView
+        android:id="@+id/pointsText"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text='@{String.valueOf(newsItem.score ?? 0) + " points"}'
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/urlText"
+        tools:text="191 points" />
+
+    <TextView
+        android:id="@+id/authorText"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_extra_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text='@{"by " + newsItem.author ?? "~UNKNOWN~"}'
+        app:layout_constraintStart_toEndOf="@+id/pointsText"
+        app:layout_constraintTop_toBottomOf="@id/urlText"
+        tools:text="by uoslisolene" />
+
+    <TextView
+        android:id="@+id/timeText"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@{newsItem.timeString}"
+        app:layout_constraintStart_toEndOf="@+id/authorText"
+        app:layout_constraintTop_toBottomOf="@id/urlText"
+        tools:text="0 minutes ago" />
+
+    <TextView
+        android:id="@+id/dividerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/divider_text"
+        app:layout_constraintStart_toEndOf="@+id/timeText"
+        app:layout_constraintTop_toBottomOf="@+id/urlText" />
+
+    <TextView
+        android:id="@+id/commentNumberText"
+        style="@style/TextAppearance.BodyMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:text='@{String.valueOf(newsItem.descendants ?? 0) + " comments"}'
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dividerText"
+        app:layout_constraintTop_toBottomOf="@+id/urlText"
+        tools:text="27 comments" />
+
+    <ImageView
+        android:id="@+id/linkImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/link_image_description"
+        app:displayIfNotNull="@{newsItem.url}"
+        app:layout_constraintBottom_toTopOf="@+id/commentNumberText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_link_50"
+        app:tint="?attr/colorTertiary" />
+
+    <TextView
+        android:id="@+id/commentHeaderText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:text="@{newsItem.textSpanned()}"
+        app:displayIfNotNull="@{newsItem.url}"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentNumberText"
+        tools:text="@string/lorem_ipsum_small_paragraph" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

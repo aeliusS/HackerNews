@@ -37,12 +37,10 @@
                 android:layout_marginTop="@dimen/margin_normal"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:text="@{newsItem.titleSpanned}"
-                app:layout_constraintEnd_toStartOf="@+id/linkImage"
+                app:layout_constraintEnd_toStartOf="@+id/commentImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Layout Breakouts with CSS Grid" />
-
-            <!-- TODO: display base url -->
 
             <TextView
                 android:id="@+id/urlText"
@@ -50,14 +48,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_extra_small"
+                app:displayURL="@{newsItem.url}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titleText"
-                app:displayURL="@{newsItem.url}"
-                tools:text="(www.google.com)" />
+                tools:text="css-tricks.com" />
 
             <TextView
                 android:id="@+id/pointsText"
-                style="@style/TextAppearance.BodySmall"
+                style="@style/TextAppearance.BodyMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_normal"
@@ -72,7 +70,7 @@
             <!-- TODO: modify to auto sizing textview -->
             <TextView
                 android:id="@+id/authorText"
-                style="@style/TextAppearance.BodySmall"
+                style="@style/TextAppearance.BodyMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_extra_small"
@@ -86,7 +84,7 @@
 
             <TextView
                 android:id="@+id/dividerBubble"
-                style="@style/TextAppearance.BodySmall"
+                style="@style/TextAppearance.BodyMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_small"
@@ -99,7 +97,7 @@
 
             <TextView
                 android:id="@+id/timeText"
-                style="@style/TextAppearance.BodySmall"
+                style="@style/TextAppearance.BodyMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_small"
@@ -112,20 +110,20 @@
                 tools:text="0 minutes ago" />
 
             <TextView
-                android:id="@+id/commentText"
-                style="@style/TextAppearance.BodySmall"
+                android:id="@+id/commentNumberText"
+                style="@style/TextAppearance.BodyMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:text='@{String.valueOf(newsItem.descendants ?? 0)}'
                 android:translationY="-2dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/linkImage"
-                app:layout_constraintTop_toBottomOf="@+id/linkImage"
+                app:layout_constraintStart_toStartOf="@+id/commentImage"
+                app:layout_constraintTop_toBottomOf="@+id/commentImage"
                 tools:text="33" />
 
             <ImageView
-                android:id="@+id/linkImage"
+                android:id="@+id/commentImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_normal"

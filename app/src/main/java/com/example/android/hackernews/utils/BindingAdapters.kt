@@ -2,7 +2,6 @@ package com.example.android.hackernews.utils
 
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,19 +11,15 @@ import com.example.android.hackernews.newslist.NewsListAdapter
 import java.net.MalformedURLException
 import java.net.URI
 
-@BindingAdapter("linkIcon")
-fun bindLinkIconImage(imageView: ImageView, url: String?) {
-    if (url == null) {
-        imageView.setImageResource(R.drawable.ic_baseline_comment_50)
-    } else {
-        imageView.setImageResource(R.drawable.ic_baseline_link_50)
-    }
-}
-
 @BindingAdapter("listData")
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<NewsItem>?) {
     val adapter = recyclerView.adapter as NewsListAdapter
     adapter.submitList(data)
+}
+
+@BindingAdapter("displayIfNotNull")
+fun displayIfNotNull(view: View, data: String?) {
+    view.visibility = if (data.isNullOrBlank()) View.GONE else View.VISIBLE
 }
 
 @BindingAdapter("goneIfNotNull")
