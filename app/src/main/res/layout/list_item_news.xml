@@ -25,7 +25,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimaryContainer"
+            android:background="?attr/colorSecondaryContainer"
             android:onClick="@{() -> clickListener.onClick(newsItem)}">
 
             <TextView
@@ -34,12 +34,26 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
                 android:text="@{newsItem.titleSpanned}"
                 app:layout_constraintEnd_toStartOf="@+id/linkImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Layout Breakouts with CSS Grid" />
+
+            <!-- TODO: display base url -->
+
+            <TextView
+                android:id="@+id/urlText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_extra_small"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleText"
+                app:displayURL="@{newsItem.url}"
+                tools:text="(www.google.com)" />
 
             <TextView
                 android:id="@+id/pointsText"
@@ -48,13 +62,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginBottom="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_normal"
                 android:text='@{String.valueOf(newsItem.score ?? 0) + " points"}'
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleText"
+                app:layout_constraintTop_toBottomOf="@id/urlText"
                 tools:text="191 points" />
 
+            <!-- TODO: modify to auto sizing textview -->
             <TextView
                 android:id="@+id/authorText"
                 style="@style/TextAppearance.BodySmall"
@@ -62,60 +77,59 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_extra_small"
                 android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginBottom="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_normal"
                 android:text='@{"by " + newsItem.author ?? "~UNKNOWN~"}'
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/pointsText"
-                app:layout_constraintTop_toBottomOf="@+id/titleText"
+                app:layout_constraintTop_toBottomOf="@id/urlText"
                 tools:text="by solene" />
+
+            <TextView
+                android:id="@+id/dividerBubble"
+                style="@style/TextAppearance.BodySmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:text="@string/divider_bubble"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/authorText"
+                app:layout_constraintTop_toBottomOf="@id/urlText" />
 
             <TextView
                 android:id="@+id/timeText"
                 style="@style/TextAppearance.BodySmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_extra_small"
+                android:layout_marginStart="@dimen/margin_small"
                 android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginBottom="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/margin_normal"
                 android:text="@{newsItem.timeString}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/authorText"
-                app:layout_constraintTop_toBottomOf="@+id/titleText"
+                app:layout_constraintStart_toEndOf="@+id/dividerBubble"
+                app:layout_constraintTop_toBottomOf="@id/urlText"
                 tools:text="0 minutes ago" />
-
-            <TextView
-                android:id="@+id/dividerText"
-                style="@style/TextAppearance.BodySmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_extra_small"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginBottom="@dimen/margin_small"
-                android:text="@string/divider_text"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/timeText"
-                app:layout_constraintTop_toBottomOf="@+id/titleText" />
 
             <TextView
                 android:id="@+id/commentText"
                 style="@style/TextAppearance.BodySmall"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_extra_small"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginEnd="@dimen/margin_small"
-                android:layout_marginBottom="@dimen/margin_small"
-                android:text='@{String.valueOf(newsItem.descendants ?? 0) + " comments"}'
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/linkImage"
-                app:layout_constraintStart_toEndOf="@+id/dividerText"
-                app:layout_constraintTop_toBottomOf="@+id/titleText"
-                tools:text="33 comments" />
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:text='@{String.valueOf(newsItem.descendants ?? 0)}'
+                android:translationY="-2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/linkImage"
+                app:layout_constraintTop_toBottomOf="@+id/linkImage"
+                tools:text="33" />
 
             <ImageView
                 android:id="@+id/linkImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_normal"
                 android:contentDescription="@string/link_image_description"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
