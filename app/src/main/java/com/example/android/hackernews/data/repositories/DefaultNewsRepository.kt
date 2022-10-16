@@ -7,8 +7,7 @@ import com.example.android.hackernews.di.IoDispatcher
 import com.example.android.hackernews.utils.toTopStories
 import com.example.android.hackernews.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
@@ -23,6 +22,15 @@ class DefaultNewsRepository @Inject constructor(
     init {
         Log.d(TAG, "DefaultNewsRepository initiated")
     }
+
+    suspend fun getNewsItem(newsItemId: Long) = withContext(ioDispatcher) {
+        wrapEspressoIdlingResource {
+            newsLocalDataSource.getNewsItem(newsItemId)
+        }
+    }
+
+    fun getTopStories() = newsLocalDataSource.getTopStories()
+        .flowOn(ioDispatcher)
 
     suspend fun getTopStoryUpdateDate() = withContext(ioDispatcher) {
         newsLocalDataSource.getTopStoryUpdateDate()
@@ -46,27 +54,42 @@ class DefaultNewsRepository @Inject constructor(
         }
     }
 
-    suspend fun updateTopStoriesWithComments() = withContext(ioDispatcher) {
+    suspend fun updateTopStoriesWithCommentsFromRemote() = withContext(ioDispatcher) {
         wrapEspressoIdlingResource {
             getTopStories().collect { newsItems ->
                 for (news in newsItems) {
-                    getChildren(news)
+                    getChildrenFromRemote(news)
                 }
             }
         }
     }
 
-    suspend fun getChildren(newsItem: NewsItem) {
+    suspend fun getChildrenFromRemote(newsItem: NewsItem) {
         if (newsItem.kids.isNullOrEmpty()) return
         for (child in newsItem.kids) {
             val newsComment = service.getNewsItem(child)
             newsLocalDataSource.upsertNewsItem(newsComment)
-            getChildren(newsComment)
+            getChildrenFromRemote(newsComment)
         }
     }
 
-    fun getTopStories() = newsLocalDataSource.getTopStories()
-        .flowOn(ioDispatcher)
+    fun getAllChildrenFromLocal(newsItemId: Long) =
+        newsLocalDataSource.getChildItems(newsItemId)
+            .onEach { topChildItems ->
+                for (child in topChildItems) {
+                    child?.childNewsItem = child?.let { getChildrenFromLocal(it) }
+                }
+            }
+            .flowOn(ioDispatcher)
+
+    private suspend fun getChildrenFromLocal(newsItem: NewsItem): List<NewsItem?> {
+        // it queries the same table, so using first() here should be fine
+        val childItems = newsLocalDataSource.getChildItems(newsItem.id).first()
+        for (child in childItems) {
+            child?.childNewsItem = child?.let { getChildrenFromLocal(it) }
+        }
+        return childItems
+    }
 
     // TODO: update bookmarked stories
 

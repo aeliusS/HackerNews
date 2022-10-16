@@ -1,8 +1,8 @@
 package com.example.android.hackernews.data.daos
 
-import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
+import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.android.hackernews.data.AppDatabase
 import com.example.android.hackernews.utils.getTestTopStories
@@ -17,6 +17,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@MediumTest
 class NewsItemDaoTest {
     private lateinit var database: AppDatabase
     private lateinit var newsItemDao: NewsItemDao
@@ -43,6 +44,24 @@ class NewsItemDaoTest {
     fun testGetTopStories() = runBlocking {
         val topStories = newsItemDao.getTopStories().first()
         assertThat(topStories.size, equalTo(testTopStoriesAsNewsItems.size))
+    }
+
+    @Test
+    fun testGetChildItems() = runBlocking {
+        val topStory = newsItemDao.getTopStories().first()[0]
+        val childNewsItems = newsItemDao.getChildItems(topStory.id).first()
+
+        assertThat(topStory.kids!!.size, equalTo(childNewsItems.size))
+        for (child in childNewsItems) {
+            assertThat(topStory.kids!!.contains(child?.id), equalTo(true))
+        }
+    }
+
+    // TODO: test empty data
+    @Test
+    fun testEmptyData() = runBlocking {
+        val childItems = newsItemDao.getChildItems(-1).first()
+        assertThat(childItems.size, equalTo(0))
     }
 
     // TODO: test that bookmarked items don't get deleted

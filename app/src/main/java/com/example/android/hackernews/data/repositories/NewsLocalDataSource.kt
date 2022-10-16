@@ -22,6 +22,8 @@ class NewsLocalDataSource @Inject constructor(
 
     fun getNewsItem(itemId: Long) = newsItemDao.getItem(itemId)
 
+    fun getChildItems(itemId: Long) = newsItemDao.getChildItems(itemId)
+
     fun getTopStories() = newsItemDao.getTopStories()
 
     suspend fun upsertNewsItem(newsItem: NewsItem) = newsItemDao.upsertItem(newsItem)

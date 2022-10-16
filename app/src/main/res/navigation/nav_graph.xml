@@ -13,10 +13,22 @@
         <action
             android:id="@+id/action_newsListFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_newsListFragment_to_commentsListFragment"
+            app:destination="@id/commentsListFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.android.hackernews.settings.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/commentsListFragment"
+        android:name="com.example.android.hackernews.commentslist.CommentsListFragment"
+        android:label="CommentsListFragment"
+        tools:layout="@layout/fragment_comments">
+        <argument
+            android:name="newsItemId"
+            app:argType="long" />
+    </fragment>
 </navigation>

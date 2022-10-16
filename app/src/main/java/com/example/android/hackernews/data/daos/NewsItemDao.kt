@@ -51,6 +51,9 @@ interface NewsItemDao {
     @Query("SELECT * FROM news_items WHERE id IN (:itemIds)")
     fun getItems(itemIds: List<Long>): Flow<List<NewsItem>>
 
+    @Query("SELECT * FROM news_items WHERE parent in (:itemId)")
+    fun getChildItems(itemId: Long): Flow<List<NewsItem?>>
+
     @Transaction
     @Query(NEWS_ITEMS_TOP_STORIES)
     fun getTopStories(): Flow<List<NewsItem>>

@@ -1,4 +1,5 @@
 package com.example.android.hackernews.commentslist.adapter
 
-class ExpandableCommentGroup {
+// TODO: use repository to get NewsItems?
+class ExpandableCommentGroup  {
 }
