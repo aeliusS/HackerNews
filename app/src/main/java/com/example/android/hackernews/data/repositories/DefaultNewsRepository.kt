@@ -23,11 +23,9 @@ class DefaultNewsRepository @Inject constructor(
         Log.d(TAG, "DefaultNewsRepository initiated")
     }
 
-    suspend fun getNewsItem(newsItemId: Long) = withContext(ioDispatcher) {
-        wrapEspressoIdlingResource {
-            newsLocalDataSource.getNewsItem(newsItemId)
-        }
-    }
+    fun getNewsItem(newsItemId: Long) = newsLocalDataSource.getNewsItem(newsItemId)
+        .flowOn(ioDispatcher)
+
 
     fun getTopStories() = newsLocalDataSource.getTopStories()
         .flowOn(ioDispatcher)
@@ -64,12 +62,17 @@ class DefaultNewsRepository @Inject constructor(
         }
     }
 
-    suspend fun getChildrenFromRemote(newsItem: NewsItem) {
+    suspend fun getChildrenFromRemote(newsItem: NewsItem) = withContext(ioDispatcher) {
+        getChildrenFromRemoteHelper(newsItem)
+    }
+
+    private suspend fun getChildrenFromRemoteHelper(newsItem: NewsItem) {
         if (newsItem.kids.isNullOrEmpty()) return
+        // var newsComments: MutableList<NewsItem> = mutableListOf()
         for (child in newsItem.kids) {
             val newsComment = service.getNewsItem(child)
             newsLocalDataSource.upsertNewsItem(newsComment)
-            getChildrenFromRemote(newsComment)
+            getChildrenFromRemoteHelper(newsComment)
         }
     }
 

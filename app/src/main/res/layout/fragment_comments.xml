@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.android.hackernews.commentslist.CommentsListViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,14 +19,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:commentsListHeader="@{viewModel.headerItem}"
+            app:commentsList="@{viewModel.comments}"
             tools:listitem="@layout/list_item_comments"/>
 
-        <!-- TODO: add app:goneIfNotNull once view model is created -->
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/commentsLoadingWheel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
+            app:goneIfListNotNull="@{viewModel.comments}"
             app:indicatorColor="?attr/colorTertiaryContainer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

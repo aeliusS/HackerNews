@@ -25,10 +25,10 @@
     <fragment
         android:id="@+id/commentsListFragment"
         android:name="com.example.android.hackernews.commentslist.CommentsListFragment"
-        android:label="CommentsListFragment"
+        android:label="Comments"
         tools:layout="@layout/fragment_comments">
         <argument
-            android:name="newsItemId"
-            app:argType="long" />
+            android:name="newsItem"
+            app:argType="com.example.android.hackernews.data.entities.NewsItem" />
     </fragment>
 </navigation>

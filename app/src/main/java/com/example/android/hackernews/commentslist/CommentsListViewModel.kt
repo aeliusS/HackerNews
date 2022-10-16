@@ -11,17 +11,18 @@ import javax.inject.Inject
 @HiltViewModel
 class CommentsListViewModel @Inject internal constructor(
     private val newsRepository: DefaultNewsRepository,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val args = CommentsListFragmentArgs.fromSavedStateHandle(savedStateHandle)
-    private val newsItemId = args.newsItemId
-    val comments: LiveData<List<NewsItem?>> = newsRepository.getAllChildrenFromLocal(newsItemId).asLiveData()
+    val headerItem = args.newsItem
+    val comments: LiveData<List<NewsItem?>> =
+        newsRepository.getAllChildrenFromLocal(headerItem.id).asLiveData()
 
+    // TODO: make the fragment have control over when remote is called
     init {
         viewModelScope.launch {
-            val newsItem = newsRepository.getNewsItem(newsItemId).first()
-            newsRepository.getChildrenFromRemote(newsItem)
+            headerItem.let { newsRepository.getChildrenFromRemote(it) }
         }
     }
 }

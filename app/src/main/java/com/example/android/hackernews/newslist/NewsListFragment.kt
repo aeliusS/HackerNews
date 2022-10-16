@@ -1,7 +1,6 @@
 package com.example.android.hackernews.newslist
 
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.util.Log
 import android.view.*
 import androidx.core.view.MenuHost
@@ -11,14 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.android.hackernews.R
-import com.example.android.hackernews.databinding.ActivityMainBinding
 import com.example.android.hackernews.databinding.FragmentNewsBinding
-import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
-class NewsListFragment: Fragment() {
+class NewsListFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
     private val viewModel: NewsListViewModel by viewModels()
 
@@ -41,7 +37,10 @@ class NewsListFragment: Fragment() {
         binding.viewModel = viewModel
 
         val adapter = NewsListAdapter(NewsClickListener { newsItem ->
-            Log.d(TAG, "news item id: ${newsItem.id} clicked")
+            Log.d(TAG, "Clicked on item id: ${newsItem.id}")
+            this.findNavController().navigate(
+                NewsListFragmentDirections.actionNewsListFragmentToCommentsListFragment(newsItem)
+            )
         })
         binding.newsListRecyclerView.adapter = adapter
 

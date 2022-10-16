@@ -25,6 +25,11 @@ class ExpandableCommentItem constructor(
             expandableGroup.onToggleExpanded()
             // TODO: animate down arrow
         }
+        viewBinding.executePendingBindings()
+    }
+
+    override fun getId(): Long {
+        return newsItem.id
     }
 
     private fun addingDepthView(viewBinding: ListItemCommentsBinding) {

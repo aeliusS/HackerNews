@@ -6,8 +6,12 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.hackernews.R
+import com.example.android.hackernews.commentslist.adapter.CommentHeader
+import com.example.android.hackernews.commentslist.adapter.ExpandableCommentGroup
 import com.example.android.hackernews.data.entities.NewsItem
 import com.example.android.hackernews.newslist.NewsListAdapter
+import com.xwray.groupie.GroupieAdapter
+import com.xwray.groupie.Section
 import java.net.MalformedURLException
 import java.net.URI
 
@@ -15,6 +19,26 @@ import java.net.URI
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<NewsItem>?) {
     val adapter = recyclerView.adapter as NewsListAdapter
     adapter.submitList(data)
+}
+
+@BindingAdapter("commentsListHeader", "commentsList")
+fun bindCommentsRecyclerView(
+    recyclerView: RecyclerView,
+    commentsListHeader: NewsItem?,
+    commentsList: List<NewsItem?>?
+) {
+    val adapter = recyclerView.adapter as GroupieAdapter
+    commentsListHeader?.let {
+        adapter.updateAsync(listOf(
+            Section(CommentHeader(it)).apply {
+                commentsList?.let { comments ->
+                    for (comment in comments) {
+                        comment?.let { add(ExpandableCommentGroup(comment)) }
+                    }
+                }
+            }
+        ))
+    }
 }
 
 @BindingAdapter("displayIfNotNull")
@@ -25,6 +49,11 @@ fun displayIfNotNull(view: View, data: String?) {
 @BindingAdapter("goneIfNotNull")
 fun goneIfNotNull(view: View, data: List<NewsItem>?) {
     view.visibility = if (!data.isNullOrEmpty()) View.GONE else View.VISIBLE
+}
+
+@BindingAdapter("goneIfListNotNull")
+fun goneIfListNotNull(view: View, data: List<NewsItem?>?) {
+    view.visibility = if (data != null) View.GONE else View.VISIBLE
 }
 
 @BindingAdapter("displayURL")

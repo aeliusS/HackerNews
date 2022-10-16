@@ -1,6 +1,7 @@
 package com.example.android.hackernews.data.entities
 
 import android.os.Build
+import android.os.Parcelable
 import android.text.Html
 import android.text.Spanned
 import android.text.format.DateUtils
@@ -13,8 +14,11 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 import java.util.Calendar
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 @Entity(tableName = "news_items")
 data class NewsItem(
@@ -38,7 +42,8 @@ data class NewsItem(
 
     // additional custom field
     val bookmarked: Boolean = false
-) {
+) : Parcelable {
+    @IgnoredOnParcel
     @Ignore var childNewsItem: List<NewsItem?>? = null
 
     fun titleSpanned(): Spanned {

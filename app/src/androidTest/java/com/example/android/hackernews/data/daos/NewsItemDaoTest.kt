@@ -57,9 +57,8 @@ class NewsItemDaoTest {
         }
     }
 
-    // TODO: test empty data
     @Test
-    fun testEmptyData() = runBlocking {
+    fun testGetChildItems_emptyData() = runBlocking {
         val childItems = newsItemDao.getChildItems(-1).first()
         assertThat(childItems.size, equalTo(0))
     }
