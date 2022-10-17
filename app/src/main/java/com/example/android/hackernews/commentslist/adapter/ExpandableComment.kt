@@ -5,6 +5,7 @@ import com.example.android.hackernews.data.entities.NewsItem
 import com.example.android.hackernews.databinding.ListItemCommentsBinding
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem
+import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 
 class ExpandableCommentItem constructor(
@@ -30,6 +31,10 @@ class ExpandableCommentItem constructor(
 
     override fun getId(): Long {
         return newsItem.id
+    }
+
+    override fun hasSameContentAs(other: Item<*>): Boolean {
+        return other is ExpandableCommentItem && other.newsItem == newsItem
     }
 
     private fun addingDepthView(viewBinding: ListItemCommentsBinding) {
