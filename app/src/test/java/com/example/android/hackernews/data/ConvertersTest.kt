@@ -35,21 +35,21 @@ class ConvertersTest {
 
     @Test
     fun longListToString() {
-        assertEquals(jsonAdapter?.toJson(list), Converters().longListToString(list))
+        assertEquals(jsonAdapter?.toJson(list), Converters.longListToString(list))
     }
 
     @Test
     fun stringToLongList() {
-        assertEquals(list, Converters().stringToLongList(listString))
+        assertEquals(list, Converters.stringToLongList(listString))
     }
 
     @Test
     fun nullLongListToString() {
-        assertEquals(jsonAdapter?.toJson(null), Converters().longListToString(null))
+        assertEquals(jsonAdapter?.toJson(null), Converters.longListToString(null))
     }
 
     @Test
     fun nullStringToLongList() {
-        assertEquals(null, Converters().stringToLongList("null"))
+        assertEquals(null, Converters.stringToLongList("null"))
     }
 }

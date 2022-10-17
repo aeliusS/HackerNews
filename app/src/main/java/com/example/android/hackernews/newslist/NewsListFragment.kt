@@ -37,7 +37,6 @@ class NewsListFragment : Fragment() {
         binding.viewModel = viewModel
 
         val adapter = NewsListAdapter(NewsClickListener { newsItem ->
-            Log.d(TAG, "Clicked on item id: ${newsItem.id}")
             this.findNavController().navigate(
                 NewsListFragmentDirections.actionNewsListFragmentToCommentsListFragment(newsItem)
             )

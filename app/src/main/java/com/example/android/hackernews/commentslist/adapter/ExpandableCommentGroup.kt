@@ -6,10 +6,10 @@ import com.xwray.groupie.ExpandableGroup
 class ExpandableCommentGroup constructor(
     newsItem: NewsItem,
     depth: Int = 0
-) : ExpandableGroup(ExpandableCommentItem(newsItem, depth)) {
+) : ExpandableGroup(ExpandableComment(newsItem, depth)) {
     init {
-        if (newsItem.childNewsItem != null) {
-            for (child in newsItem.childNewsItem!!) {
+        if (newsItem.childNewsItems != null) {
+            for (child in newsItem.childNewsItems!!) {
                 child?.let { add(ExpandableCommentGroup(child, depth.plus(1))) }
             }
         }

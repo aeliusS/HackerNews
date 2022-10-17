@@ -34,7 +34,11 @@ class CommentsListFragment: Fragment() {
         // TODO: get child NewsItems from repository for recycler view
         val adapter = GroupieAdapter()
         binding.commentsListRecyclerView.adapter = adapter
+
+        // TODO: update NewsItem header item
     }
+
+    // TODO: create menu for refresh and link
 
     private fun populateAdapter() {
         TODO()

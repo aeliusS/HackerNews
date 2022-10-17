@@ -1,8 +1,12 @@
 package com.example.android.hackernews.utils
 
+import android.os.Build
+import android.text.Html
+import android.text.format.DateUtils
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.hackernews.R
@@ -14,6 +18,7 @@ import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Section
 import java.net.MalformedURLException
 import java.net.URI
+import java.util.*
 
 @BindingAdapter("listData")
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<NewsItem>?) {
@@ -56,6 +61,11 @@ fun goneIfListNotNull(view: View, data: List<NewsItem?>?) {
     view.visibility = if (data != null) View.GONE else View.VISIBLE
 }
 
+@BindingAdapter("goneIfListEmptyOrNull")
+fun goneIfListEmptyOrNull(view: View, childNewsItems: List<NewsItem?>?) {
+    view.visibility = if (childNewsItems.isNullOrEmpty()) View.GONE else View.VISIBLE
+}
+
 @BindingAdapter("displayURL")
 fun displayURL(textView: TextView, url: String?) {
     // remove the url view if the url is empty
@@ -82,4 +92,34 @@ fun getURLString(input: String): String {
         "~MALFORMED URL~"
     }
     return baseURL
+}
+
+@BindingAdapter("displayTime")
+fun displayTime(textView: TextView, timeUTC: Long?) {
+    textView.text = if (timeUTC == null) "unknown time ago"
+    else DateUtils.getRelativeTimeSpanString(
+        timeUTC * 1000,
+        Calendar.getInstance().timeInMillis,
+        DateUtils.MINUTE_IN_MILLIS
+    )
+}
+
+@BindingAdapter("displayHTML")
+fun displayHTML(textView: TextView, text: String?) {
+    textView.text = if (text == null) "~NO DATA~"
+    else {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        }
+    }
+}
+
+@BindingAdapter("displayChildCount")
+fun displayChildCount(textView: TextView, childNewsItems: List<NewsItem?>?) {
+    childNewsItems?.let {
+        if (it.isNotEmpty())
+            textView.text = "${it.size}"
+    }
 }

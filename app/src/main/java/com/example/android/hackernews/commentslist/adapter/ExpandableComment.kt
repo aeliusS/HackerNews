@@ -1,5 +1,6 @@
 package com.example.android.hackernews.commentslist.adapter
 
+import android.util.Log
 import com.example.android.hackernews.R
 import com.example.android.hackernews.data.entities.NewsItem
 import com.example.android.hackernews.databinding.ListItemCommentsBinding
@@ -8,10 +9,10 @@ import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.Item
 import com.xwray.groupie.databinding.BindableItem
 
-class ExpandableCommentItem constructor(
+class ExpandableComment constructor(
     private val newsItem: NewsItem,
     private val depth: Int
-): BindableItem<ListItemCommentsBinding>(), ExpandableItem {
+) : BindableItem<ListItemCommentsBinding>(), ExpandableItem {
     private lateinit var expandableGroup: ExpandableGroup
 
     override fun setExpandableGroup(onToggleListener: ExpandableGroup) {
@@ -24,7 +25,7 @@ class ExpandableCommentItem constructor(
         viewBinding.newsItem = newsItem
         viewBinding.expandCommentArrow.setOnClickListener {
             expandableGroup.onToggleExpanded()
-            // TODO: animate down arrow
+            Log.d("ExpandableComment", "expanded for item: ${newsItem.id}")
         }
         viewBinding.executePendingBindings()
     }
@@ -33,8 +34,9 @@ class ExpandableCommentItem constructor(
         return newsItem.id
     }
 
+    // TODO: bug with equality
     override fun hasSameContentAs(other: Item<*>): Boolean {
-        return other is ExpandableCommentItem && other.newsItem == newsItem
+        return other is ExpandableComment && other.newsItem == newsItem
     }
 
     private fun addingDepthView(viewBinding: ListItemCommentsBinding) {

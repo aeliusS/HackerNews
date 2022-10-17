@@ -80,7 +80,7 @@ class DefaultNewsRepository @Inject constructor(
         newsLocalDataSource.getChildItems(newsItemId)
             .onEach { topChildItems ->
                 for (child in topChildItems) {
-                    child?.childNewsItem = child?.let { getChildrenFromLocal(it) }
+                    child?.childNewsItems = child?.let { getChildrenFromLocal(it) }
                 }
             }
             .flowOn(ioDispatcher)
@@ -89,7 +89,7 @@ class DefaultNewsRepository @Inject constructor(
         // it queries the same table, so using first() here should be fine
         val childItems = newsLocalDataSource.getChildItems(newsItem.id).first()
         for (child in childItems) {
-            child?.childNewsItem = child?.let { getChildrenFromLocal(it) }
+            child?.childNewsItems = child?.let { getChildrenFromLocal(it) }
         }
         return childItems
     }
