@@ -51,7 +51,7 @@ interface NewsItemDao {
     @Query("SELECT * FROM news_items WHERE id IN (:itemIds)")
     fun getItems(itemIds: List<Long>): Flow<List<NewsItem>>
 
-    @Query("SELECT * FROM news_items WHERE parent in (:itemId) ORDER BY id ASC")
+    @Query(GET_CHILD_COMMENTS)
     fun getChildItems(itemId: Long): Flow<List<NewsItem?>>
 
     @Transaction
@@ -67,6 +67,14 @@ interface NewsItemDao {
     fun getBestStories(): Flow<List<NewsItem>>
 
     companion object {
+        // TODO: switch to rank order
+        private const val GET_CHILD_COMMENTS = """
+            SELECT * FROM news_items 
+            WHERE parent IN (:itemId) AND (dead IS NULL OR dead IS FALSE)
+                AND (deleted IS NULL OR deleted IS FALSE)
+            ORDER BY id ASC
+        """
+
         private const val NEWS_ITEMS_TOP_STORIES = """
             SELECT nt.* FROM news_items as nt
             INNER JOIN top_stories AS top ON top.item_id = nt.id

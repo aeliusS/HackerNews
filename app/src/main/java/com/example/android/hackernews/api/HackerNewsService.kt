@@ -21,7 +21,7 @@ interface HackerNewsService {
     suspend fun getNewStories(): List<Long>
 
     @GET("v0/item/{item_id}.json")
-    suspend fun getNewsItem(@Path(value = "item_id", encoded = true) itemId: Long): NewsItem
+    suspend fun getNewsItem(@Path(value = "item_id", encoded = true) itemId: Long): NewsItem?
 
     companion object {
         private const val BASE_URL = "https://hacker-news.firebaseio.com/"

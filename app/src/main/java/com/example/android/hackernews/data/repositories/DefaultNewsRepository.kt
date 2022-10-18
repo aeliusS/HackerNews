@@ -47,7 +47,9 @@ class DefaultNewsRepository @Inject constructor(
             val topStoryIds = newsLocalDataSource.getTopStoryIds()
             for (topStoryId in topStoryIds) {
                 val newsItem = service.getNewsItem(topStoryId.itemId)
-                newsLocalDataSource.upsertNewsItem(newsItem)
+                newsItem?.let {
+                    newsLocalDataSource.upsertNewsItem(newsItem)
+                }
             }
         }
     }
@@ -71,8 +73,10 @@ class DefaultNewsRepository @Inject constructor(
         // var newsComments: MutableList<NewsItem> = mutableListOf()
         for (child in newsItem.kids) {
             val newsComment = service.getNewsItem(child)
-            newsLocalDataSource.upsertNewsItem(newsComment)
-            getChildrenFromRemoteHelper(newsComment)
+            newsComment?.let {
+                newsLocalDataSource.upsertNewsItem(newsComment)
+                getChildrenFromRemoteHelper(newsComment)
+            }
         }
     }
 

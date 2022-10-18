@@ -14,6 +14,7 @@ import com.example.android.hackernews.commentslist.adapter.CommentHeader
 import com.example.android.hackernews.commentslist.adapter.ExpandableCommentGroup
 import com.example.android.hackernews.data.entities.NewsItem
 import com.example.android.hackernews.newslist.NewsListAdapter
+import com.xwray.groupie.Group
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Section
 import java.net.MalformedURLException
@@ -34,15 +35,24 @@ fun bindCommentsRecyclerView(
 ) {
     val adapter = recyclerView.adapter as GroupieAdapter
     commentsListHeader?.let {
-        adapter.updateAsync(listOf(
-            Section(CommentHeader(it)).apply {
-                commentsList?.let { comments ->
-                    for (comment in comments) {
-                        comment?.let { add(ExpandableCommentGroup(comment)) }
-                    }
+        val commentsMutableList: MutableList<Group> = mutableListOf(CommentHeader(it))
+        commentsList?.let { comments ->
+            for (comment in comments) {
+                comment?.let {
+                    commentsMutableList.add(ExpandableCommentGroup(comment))
                 }
             }
-        ))
+        }
+        adapter.updateAsync(commentsMutableList)
+//        adapter.updateAsync(listOf(
+//            Section(CommentHeader(it)).apply {
+//                commentsList?.let { comments ->
+//                    for (comment in comments) {
+//                        comment?.let { add(ExpandableCommentGroup(comment)) }
+//                    }
+//                }
+//            }
+//        ))
     }
 }
 

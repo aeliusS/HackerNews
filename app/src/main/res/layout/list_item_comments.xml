@@ -15,15 +15,24 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorSecondaryContainer">
 
+        <LinearLayout
+            android:id="@+id/separatorContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/commentAuthor"
             style="@style/TextAppearance.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_normal"
             android:text='@{newsItem.author ?? "~UNKNOWN~"}'
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/separatorContainer"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="badsectoracula" />
 
@@ -54,14 +63,14 @@
             android:id="@+id/commentText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/margin_normal"
             app:displayHTML="@{newsItem.text}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/separatorContainer"
             app:layout_constraintTop_toBottomOf="@+id/commentAuthor"
             tools:text="@string/lorem_ipsum_paragraph" />
 
@@ -77,7 +86,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
 
-        <!-- TODO: add binding adapter for child comments number -->
         <TextView
             android:id="@+id/childCommentsNumber"
             style="@style/TextAppearance.BodyMedium"

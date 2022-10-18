@@ -1,8 +1,12 @@
 package com.example.android.hackernews.commentslist.adapter
 
+import android.content.Context
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import com.example.android.hackernews.R
 import com.example.android.hackernews.data.entities.NewsItem
+import com.example.android.hackernews.databinding.LayoutSeparatorViewBinding
 import com.example.android.hackernews.databinding.ListItemCommentsBinding
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.ExpandableItem
@@ -22,8 +26,11 @@ class ExpandableComment constructor(
     override fun getLayout(): Int = R.layout.list_item_comments
 
     override fun bind(viewBinding: ListItemCommentsBinding, position: Int) {
+        addingDepthView(viewBinding)
+
         viewBinding.newsItem = newsItem
         viewBinding.expandCommentArrow.setOnClickListener {
+            // TODO: update newsItem.isExpanded in database
             expandableGroup.onToggleExpanded()
             Log.d("ExpandableComment", "expanded for item: ${newsItem.id}")
         }
@@ -34,12 +41,23 @@ class ExpandableComment constructor(
         return newsItem.id
     }
 
-    // TODO: bug with equality
-    override fun hasSameContentAs(other: Item<*>): Boolean {
-        return other is ExpandableComment && other.newsItem == newsItem
-    }
+    // TODO: bug with equality in groupie
+    // see https://github.com/lisawray/groupie/issues/379
+//    override fun hasSameContentAs(other: Item<*>): Boolean {
+//        return other is ExpandableComment && other.newsItem == newsItem && other.newsItem.childNewsItems == newsItem.childNewsItems
+//    }
 
     private fun addingDepthView(viewBinding: ListItemCommentsBinding) {
-        //viewBinding.
+        val separatorContainer = viewBinding.separatorContainer
+        separatorContainer.removeAllViews()
+        separatorContainer.visibility = if (depth > 0) View.VISIBLE else View.GONE
+        for (i in 1..depth) {
+            val view: View = LayoutInflater.from(viewBinding.root.context)
+                .inflate(R.layout.layout_separator_view, separatorContainer, false)
+            separatorContainer.addView(view)
+        }
+        viewBinding.commentText.requestLayout()
     }
+
+
 }

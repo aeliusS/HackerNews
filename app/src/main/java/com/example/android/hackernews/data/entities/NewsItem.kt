@@ -33,7 +33,8 @@ data class NewsItem(
     val descendants: Int? = null, // number of comments
 
     // additional custom field
-    val bookmarked: Boolean = false
+    val bookmarked: Boolean = false,
+    @IgnoredOnParcel var isExpanded: Boolean = false
 ) : Parcelable {
 
     /**
@@ -64,7 +65,8 @@ data class NewsItem(
                         this.parts == other.parts &&
                         this.descendants == other.descendants &&
                         this.bookmarked == other.bookmarked &&
-                        this.childNewsItems == other.childNewsItems
+                        this.childNewsItems == other.childNewsItems &&
+                        this.isExpanded == other.isExpanded
                 )
     }
 
@@ -86,6 +88,7 @@ data class NewsItem(
         result = 31 * result + (descendants ?: 0)
         result = 31 * result + bookmarked.hashCode()
         result = 31 * result + (childNewsItems?.hashCode() ?: 0)
+        result = 31 * result + isExpanded.hashCode()
         return result
     }
 }
