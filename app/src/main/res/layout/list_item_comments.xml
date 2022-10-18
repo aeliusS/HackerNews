@@ -8,6 +8,10 @@
         <variable
             name="newsItem"
             type="com.example.android.hackernews.data.entities.NewsItem" />
+
+        <variable
+            name="clickListener"
+            type="com.example.android.hackernews.newslist.NewsClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,10 +34,9 @@
             style="@style/TextAppearance.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginTop="8dp"
             android:text='@{newsItem.author ?? "~UNKNOWN~"}'
-            app:layout_constraintStart_toEndOf="@id/separatorContainer"
+            app:layout_constraintStart_toEndOf="@+id/expandCommentArrow"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="badsectoracula" />
 
@@ -42,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginTop="8dp"
             android:text="@string/divider_bubble"
             app:layout_constraintStart_toEndOf="@+id/commentAuthor"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginTop="8dp"
             app:displayTime="@{newsItem.time}"
             app:layout_constraintStart_toEndOf="@+id/commentDividerBubble"
             app:layout_constraintTop_toTopOf="parent"
@@ -61,29 +65,27 @@
 
         <TextView
             android:id="@+id/commentText"
+            style="@style/TextAppearance.BodyLarge"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             app:displayHTML="@{newsItem.text}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/separatorContainer"
+            app:layout_constraintStart_toStartOf="@+id/commentAuthor"
             app:layout_constraintTop_toBottomOf="@+id/commentAuthor"
             tools:text="@string/lorem_ipsum_paragraph" />
 
         <ImageView
             android:id="@+id/expandCommentArrow"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
             android:contentDescription="@string/expand_comment_arrow_description"
-            app:goneIfListEmptyOrNull="@{newsItem.childNewsItems}"
-            app:layout_constraintEnd_toStartOf="@+id/childCommentsNumber"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/commentAuthor"
+            app:layout_constraintStart_toEndOf="@id/separatorContainer"
+            app:layout_constraintTop_toTopOf="@+id/commentAuthor"
             app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
 
         <TextView

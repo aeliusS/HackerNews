@@ -1,12 +1,15 @@
 package com.example.android.hackernews.newslist
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.hackernews.data.entities.NewsItem
 import com.example.android.hackernews.databinding.ListItemNewsBinding
+import com.xwray.groupie.Item
+import com.xwray.groupie.OnItemClickListener
 
 class NewsListAdapter(private val clickListener: NewsClickListener) :
     ListAdapter<NewsItem, NewsListAdapter.NewsListViewHolder>(DiffCallBack) {

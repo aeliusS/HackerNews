@@ -34,7 +34,7 @@ data class NewsItem(
 
     // additional custom field
     val bookmarked: Boolean = false,
-    @IgnoredOnParcel var isExpanded: Boolean = false
+    @IgnoredOnParcel var isExpanded: Boolean = true
 ) : Parcelable {
 
     /**

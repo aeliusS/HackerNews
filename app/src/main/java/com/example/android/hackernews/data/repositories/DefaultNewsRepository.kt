@@ -26,9 +26,10 @@ class DefaultNewsRepository @Inject constructor(
     fun getNewsItem(newsItemId: Long) = newsLocalDataSource.getNewsItem(newsItemId)
         .flowOn(ioDispatcher)
 
-
     fun getTopStories() = newsLocalDataSource.getTopStories()
         .flowOn(ioDispatcher)
+
+    suspend fun updateNewsItem(newsItem: NewsItem) = newsLocalDataSource.updateNewsItem(newsItem)
 
     suspend fun getTopStoryUpdateDate() = withContext(ioDispatcher) {
         newsLocalDataSource.getTopStoryUpdateDate()
@@ -48,7 +49,7 @@ class DefaultNewsRepository @Inject constructor(
             for (topStoryId in topStoryIds) {
                 val newsItem = service.getNewsItem(topStoryId.itemId)
                 newsItem?.let {
-                    newsLocalDataSource.upsertNewsItem(newsItem)
+                    newsLocalDataSource.upsertNewsItemPartial(newsItem)
                 }
             }
         }
@@ -74,7 +75,7 @@ class DefaultNewsRepository @Inject constructor(
         for (child in newsItem.kids) {
             val newsComment = service.getNewsItem(child)
             newsComment?.let {
-                newsLocalDataSource.upsertNewsItem(newsComment)
+                newsLocalDataSource.upsertNewsItemPartial(newsComment)
                 getChildrenFromRemoteHelper(newsComment)
             }
         }

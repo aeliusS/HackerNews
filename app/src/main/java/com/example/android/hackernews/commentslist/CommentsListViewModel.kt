@@ -25,4 +25,8 @@ class CommentsListViewModel @Inject internal constructor(
             headerItem.let { newsRepository.getChildrenFromRemote(it) }
         }
     }
+
+    fun toggleIsExpanded(newsItem: NewsItem) = viewModelScope.launch {
+        newsRepository.updateNewsItem(newsItem.copy(isExpanded = !newsItem.isExpanded))
+    }
 }

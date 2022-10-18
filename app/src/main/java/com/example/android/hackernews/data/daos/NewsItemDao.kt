@@ -21,13 +21,16 @@ interface NewsItemDao {
     suspend fun insertItem(newsItem: NewsItem)
 
     @Update(entity = NewsItem::class)
-    suspend fun updateItem(newsItemUpdate: NewsItemUpdate)
+    suspend fun updateItemPartial(newsItemUpdate: NewsItemUpdate)
+
+    @Update
+    suspend fun updateItem(newsItem: NewsItem)
 
     suspend fun upsertItem(newsItem: NewsItem) {
         try {
             insertItem(newsItem)
         } catch (e: SQLiteConstraintException) {
-            updateItem(newsItem.toUpdate())
+            updateItemPartial(newsItem.toUpdate())
         }
     }
 
@@ -37,7 +40,7 @@ interface NewsItemDao {
             try {
                 insertItem(it)
             } catch (e: SQLiteConstraintException) {
-                updateItem(it.toUpdate())
+                updateItemPartial(it.toUpdate())
             }
         }
     }
