@@ -4,7 +4,7 @@ package com.example.android.hackernews.data.entities
 /**
  * Class used to update specific fields of the news_items (NewsItem) table
  * */
-data class NewsItemUpdate(
+data class NewsItemPartial(
     val id: Long,
     val deleted: Boolean,
     val type: String?,

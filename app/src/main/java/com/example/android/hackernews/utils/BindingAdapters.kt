@@ -6,6 +6,7 @@ import android.text.format.DateUtils
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,15 +35,6 @@ fun bindCommentsRecyclerView(
 ) {
     val adapter = recyclerView.adapter as GroupieAdapter
     commentsListHeader?.let {
-//        val commentsMutableList: MutableList<Group> = mutableListOf(CommentHeader(it))
-//        commentsList?.let { comments ->
-//            for (comment in comments) {
-//                comment?.let {
-//                    commentsMutableList.add(ExpandableCommentGroup(comment))
-//                }
-//            }
-//        }
-//        adapter.updateAsync(commentsMutableList)
         adapter.updateAsync(listOf(
             Section(CommentHeader(it)).apply {
                 commentsList?.let { comments ->
@@ -52,6 +44,23 @@ fun bindCommentsRecyclerView(
                 }
             }
         ))
+    }
+}
+
+/**
+ * Display a border once there are no more child comments
+ * */
+@BindingAdapter("displayCommentBackground")
+fun displayCommentBackground(view: View, childNewsItems: List<NewsItem?>?) {
+    if (childNewsItems == null) {
+        view.background =
+            ContextCompat.getDrawable(view.context, R.drawable.border_none)
+        return
+    }
+    view.background = if (childNewsItems.isEmpty()) {
+        ContextCompat.getDrawable(view.context, R.drawable.border_bottom)
+    } else {
+        ContextCompat.getDrawable(view.context, R.drawable.border_none)
     }
 }
 

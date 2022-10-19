@@ -20,8 +20,8 @@ fun List<Long>.toNewStories(): List<NewStories> {
     }
 }
 
-fun NewsItem.toUpdate(): NewsItemUpdate {
-    return NewsItemUpdate(
+fun NewsItem.toPartial(): NewsItemPartial {
+    return NewsItemPartial(
         id = id,
         deleted= deleted,
         type=type,

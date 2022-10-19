@@ -7,8 +7,8 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.example.android.hackernews.data.entities.NewsItem
-import com.example.android.hackernews.data.entities.NewsItemUpdate
-import com.example.android.hackernews.utils.toUpdate
+import com.example.android.hackernews.data.entities.NewsItemPartial
+import com.example.android.hackernews.utils.toPartial
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -20,17 +20,17 @@ interface NewsItemDao {
     @Insert
     suspend fun insertItem(newsItem: NewsItem)
 
-    @Update(entity = NewsItem::class)
-    suspend fun updateItemPartial(newsItemUpdate: NewsItemUpdate)
-
     @Update
     suspend fun updateItem(newsItem: NewsItem)
+
+    @Update(entity = NewsItem::class)
+    suspend fun updateItemPartial(newsItemPartial: NewsItemPartial)
 
     suspend fun upsertItem(newsItem: NewsItem) {
         try {
             insertItem(newsItem)
         } catch (e: SQLiteConstraintException) {
-            updateItemPartial(newsItem.toUpdate())
+            updateItemPartial(newsItem.toPartial())
         }
     }
 
@@ -40,13 +40,10 @@ interface NewsItemDao {
             try {
                 insertItem(it)
             } catch (e: SQLiteConstraintException) {
-                updateItemPartial(it.toUpdate())
+                updateItemPartial(it.toPartial())
             }
         }
     }
-
-    @Query(REMOVE_STALE_NEWS)
-    suspend fun removeStaleStories()
 
     @Query("SELECT * FROM news_items WHERE id = :itemId")
     fun getItem(itemId: Long): Flow<NewsItem>
@@ -68,6 +65,9 @@ interface NewsItemDao {
     @Transaction
     @Query(NEWS_ITEMS_BEST_STORIES)
     fun getBestStories(): Flow<List<NewsItem>>
+
+    @Query(REMOVE_STALE_NEWS)
+    suspend fun removeStaleStories()
 
     companion object {
         // TODO: switch to rank order

@@ -8,8 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.android.hackernews.data.entities.NewsItem
 import com.example.android.hackernews.data.repositories.DefaultNewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
@@ -34,9 +32,12 @@ class NewsListViewModel @Inject internal constructor(
         viewModelScope.launch {
             if (!shouldUpdateTopStories()) return@launch
             Log.d(TAG, "updating top stories")
-            newsRepository.updateTopStoryIdsFromRemoteService()
+            // TODO: get result and display error
+            newsRepository.updateTopStoryIdsRemote()
             newsRepository.updateTopStories()
             // newsRepository.updateTopStoriesWithComments() // too expensive
+
+            // TODO: do update top stories partial
         }
     }
 

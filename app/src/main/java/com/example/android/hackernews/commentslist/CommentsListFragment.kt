@@ -38,6 +38,8 @@ class CommentsListFragment : Fragment() {
         binding.commentsListRecyclerView.adapter = adapter
 
         // TODO: update NewsItem header item
+
+        // TODO: display top border for top level comments
     }
 
     private val onCommentClickListener = OnItemClickListener { item, _ ->
