@@ -1,6 +1,5 @@
 package com.example.android.hackernews.commentslist.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import com.example.android.hackernews.R
@@ -27,6 +26,15 @@ class ExpandableComment constructor(
         addingDepthView(viewBinding)
 
         viewBinding.newsItem = newsItem
+        if (newsItem.isExpanded) {
+            viewBinding.commentItemMotionLayout.transitionToStart()
+            // viewBinding.commentText.visibility = View.VISIBLE
+        }
+        else {
+            viewBinding.commentItemMotionLayout.transitionToEnd()
+            // viewBinding.commentText.visibility = View.GONE
+        }
+
         viewBinding.executePendingBindings()
     }
 
@@ -43,13 +51,13 @@ class ExpandableComment constructor(
     private fun addingDepthView(viewBinding: ListItemCommentsBinding) {
         val separatorContainer = viewBinding.separatorContainer
         separatorContainer.removeAllViews()
-        separatorContainer.visibility = if (depth > 0) View.VISIBLE else View.GONE
+        // separatorContainer.visibility = if (depth > 0) View.VISIBLE else View.GONE
         for (i in 1..depth) {
             val view: View = LayoutInflater.from(viewBinding.root.context)
                 .inflate(R.layout.layout_separator_view, separatorContainer, false)
             separatorContainer.addView(view)
         }
-        viewBinding.commentText.requestLayout()
+        // viewBinding.commentText.requestLayout()
     }
 
 

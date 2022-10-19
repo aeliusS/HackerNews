@@ -48,23 +48,6 @@ fun bindCommentsRecyclerView(
     }
 }
 
-/**
- * Display a border once there are no more child comments
- * */
-@BindingAdapter("displayCommentBackground")
-fun displayCommentBackground(view: View, childNewsItems: List<NewsItem?>?) {
-    if (childNewsItems == null) {
-        view.background =
-            ContextCompat.getDrawable(view.context, R.drawable.border_none)
-        return
-    }
-    view.background = if (childNewsItems.isEmpty()) {
-        ContextCompat.getDrawable(view.context, R.drawable.border_bottom)
-    } else {
-        ContextCompat.getDrawable(view.context, R.drawable.border_none)
-    }
-}
-
 @BindingAdapter("displayIfNotNull")
 fun displayIfNotNull(view: View, data: String?) {
     view.visibility = if (data.isNullOrBlank()) View.GONE else View.VISIBLE
@@ -78,11 +61,6 @@ fun goneIfNotNull(view: View, data: List<NewsItem>?) {
 @BindingAdapter("goneIfListNotNull")
 fun goneIfListNotNull(view: View, data: List<NewsItem?>?) {
     view.visibility = if (data != null) View.GONE else View.VISIBLE
-}
-
-@BindingAdapter("goneIfListEmptyOrNull")
-fun goneIfListEmptyOrNull(view: View, childNewsItems: List<NewsItem?>?) {
-    view.visibility = if (childNewsItems.isNullOrEmpty()) View.GONE else View.VISIBLE
 }
 
 @BindingAdapter("displayURL")
@@ -131,19 +109,6 @@ fun displayHTML(textView: TextView, text: String?) {
             Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).trim()
         } else {
             HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY).trim()
-        }
-    }
-}
-
-@BindingAdapter("motionState")
-fun motionState(motionLayout: MotionLayout, isExpanded: Boolean?) {
-    isExpanded?.let {
-        Log.d("motionState", "is expanded: $isExpanded")
-        if (!it) {
-            motionLayout.transitionToEnd()
-        } else {
-            Log.d("motionState", "motion state is ${motionLayout.transitionState}")
-            motionLayout.transitionToStart()
         }
     }
 }

@@ -4,18 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="android.view.View"/>
         <variable
             name="newsItem"
             type="com.example.android.hackernews.data.entities.NewsItem" />
     </data>
 
     <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/commentItemMotionLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorSecondaryContainer"
-        app:motionDebug="NO_DEBUG"
-        app:motionState="@{newsItem.isExpanded}"
         app:layoutDescription="@xml/list_item_comments_scene">
 
         <LinearLayout
@@ -23,7 +22,6 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -76,6 +74,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="1 hours ago" />
 
+        <!-- TODO: bug with comment text visibility -->
         <TextView
             android:id="@+id/commentText"
             style="@style/TextAppearance.BodyLarge"
@@ -84,6 +83,7 @@
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
+            android:visibility="@{newsItem.isExpanded ? View.VISIBLE : View.GONE}"
             app:displayHTML="@{newsItem.text}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,6 +1,7 @@
 package com.example.android.hackernews.commentslist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,11 +45,14 @@ class CommentsListFragment : Fragment() {
 
     private val onCommentClickListener = OnItemClickListener { item, _ ->
         if (item is ExpandableComment) {
-            Toast.makeText(requireContext(), "Clicked: ${item.newsItem.id}", Toast.LENGTH_SHORT)
-                .show()
+            Log.d(TAG, "Clicked on comment: ${item.newsItem.id}")
             viewModel.toggleIsExpanded(newsItem = item.newsItem)
         }
     }
 
     // TODO: create menu for refresh and link
+
+    companion object {
+        private const val TAG = "CommentsListFragment"
+    }
 }
