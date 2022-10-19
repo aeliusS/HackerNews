@@ -8,16 +8,15 @@
         <variable
             name="newsItem"
             type="com.example.android.hackernews.data.entities.NewsItem" />
-
-        <variable
-            name="clickListener"
-            type="com.example.android.hackernews.newslist.NewsClickListener" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSecondaryContainer">
+        android:background="?attr/colorSecondaryContainer"
+        app:motionDebug="NO_DEBUG"
+        app:motionState="@{newsItem.isExpanded}"
+        app:layoutDescription="@xml/list_item_comments_scene">
 
         <LinearLayout
             android:id="@+id/separatorContainer"
@@ -29,14 +28,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/commentArrow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:contentDescription="@string/expand_comment_arrow_description"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="@+id/commentAuthor"
+            app:layout_constraintStart_toEndOf="@id/separatorContainer"
+            app:layout_constraintTop_toTopOf="@+id/commentAuthor"
+            app:srcCompat="@drawable/expand"
+            app:tint="?attr/colorOnSecondaryContainer" />
+
         <TextView
             android:id="@+id/commentAuthor"
             style="@style/TextAppearance.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:text='@{newsItem.author ?? "~UNKNOWN~"}'
-            app:layout_constraintStart_toEndOf="@+id/expandCommentArrow"
+            app:layout_constraintStart_toEndOf="@+id/commentArrow"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="badsectoracula" />
 
@@ -78,16 +91,6 @@
             app:layout_constraintTop_toBottomOf="@+id/commentAuthor"
             tools:text="@string/lorem_ipsum_paragraph" />
 
-        <ImageView
-            android:id="@+id/expandCommentArrow"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/expand_comment_arrow_description"
-            app:layout_constraintBottom_toBottomOf="@+id/commentAuthor"
-            app:layout_constraintStart_toEndOf="@id/separatorContainer"
-            app:layout_constraintTop_toTopOf="@+id/commentAuthor"
-            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
-
         <TextView
             android:id="@+id/childCommentsNumber"
             style="@style/TextAppearance.BodyMedium"
@@ -95,11 +98,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             app:displayChildCount="@{newsItem.childNewsItems}"
-            app:goneIfListEmptyOrNull="@{newsItem.childNewsItems}"
-            app:layout_constraintBottom_toBottomOf="@+id/expandCommentArrow"
+            app:layout_constraintBottom_toBottomOf="@+id/commentArrow"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/expandCommentArrow"
+            app:layout_constraintTop_toTopOf="@+id/commentArrow"
             tools:text="2" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

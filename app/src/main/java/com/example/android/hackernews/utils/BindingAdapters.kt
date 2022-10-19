@@ -6,6 +6,7 @@ import android.text.format.DateUtils
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
@@ -127,17 +128,33 @@ fun displayHTML(textView: TextView, text: String?) {
     textView.text = if (text == null) "~NO DATA~"
     else {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
+            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).trim()
         } else {
-            HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY).trim()
+        }
+    }
+}
+
+@BindingAdapter("motionState")
+fun motionState(motionLayout: MotionLayout, isExpanded: Boolean?) {
+    isExpanded?.let {
+        Log.d("motionState", "is expanded: $isExpanded")
+        if (!it) {
+            motionLayout.transitionToEnd()
+        } else {
+            Log.d("motionState", "motion state is ${motionLayout.transitionState}")
+            motionLayout.transitionToStart()
         }
     }
 }
 
 @BindingAdapter("displayChildCount")
 fun displayChildCount(textView: TextView, childNewsItems: List<NewsItem?>?) {
-    childNewsItems?.let {
-        if (it.isNotEmpty())
-            textView.text = "${it.size}"
+    if (childNewsItems.isNullOrEmpty()) {
+        textView.text = "0"
+        return
+    }
+    childNewsItems.let {
+        textView.text = "${it.size}"
     }
 }
