@@ -19,12 +19,9 @@ class NewsListViewModel @Inject internal constructor(
 
     val topStories: LiveData<List<NewsItem>> = newsRepository.getTopStories().asLiveData()
 
-    // TODO: use mutable state flow to set recycler view list
-
     // TODO: display error
-    suspend fun updateTopStories() {
-        Log.d(TAG,"updateTopStories called")
-        if (!shouldUpdateTopStories()) {
+    suspend fun updateTopStories(force: Boolean = false) {
+        if (!shouldUpdateTopStories() && !force) {
             newsRepository.updateTopStoriesFromRemote(true)
             return
         }

@@ -2,7 +2,11 @@
     <string name="app_name">HackerNews</string>
     <string name="settings">Settings</string>
     <string name="search">Search</string>
-    <string name="content_description_search">Search for news</string>
+    <string name="search_content_description">Search for news</string>
+    <string name="refresh">Refresh</string>
+    <string name="refresh_content_description">Refresh the news</string>
+    <string name="web_link">Open Link</string>
+    <string name="web_link_content_description">Open link in browser</string>
     <string name="news_title">News</string>
     <string name="filter_news">Filter News</string>
     <string name="content_description_filter_news">Filter the news</string>

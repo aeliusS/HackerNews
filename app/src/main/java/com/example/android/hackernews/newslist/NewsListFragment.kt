@@ -41,9 +41,7 @@ class NewsListFragment : Fragment() {
         binding.lifecycleOwner = this.viewLifecycleOwner
         setupMenuOptions()
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.updateTopStories()
-        }
+        updateTopStories()
 
         binding.viewModel = viewModel
 
@@ -72,11 +70,12 @@ class NewsListFragment : Fragment() {
                 menuInflater.inflate(R.menu.news_fragment_menu, menu)
             }
 
-            // TODO: finish menu
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
                 when (menuItem.itemId) {
-                    R.id.search -> true
-                    R.id.filter_news -> true
+                    R.id.refresh_news -> {
+                        updateTopStories(true)
+                        true
+                    }
                     R.id.settings -> {
                         findNavController().navigate(
                             NewsListFragmentDirections.actionNewsListFragmentToSettingsFragment()
@@ -86,6 +85,12 @@ class NewsListFragment : Fragment() {
                     else -> false
                 }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun updateTopStories(force: Boolean = false) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.updateTopStories(force)
+        }
     }
 
     private fun navigateToComment(newsItem: NewsItem) {

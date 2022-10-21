@@ -22,8 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="16dp"
             app:displayHTML="@{newsItem.title}"
-            app:layout_constraintEnd_toStartOf="@+id/linkImage"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Layout Breakouts with CSS Grid" />
@@ -34,8 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_extra_small"
+            android:layout_marginEnd="16dp"
             app:displayURL="@{newsItem.url}"
-            app:layout_constraintEnd_toStartOf="@+id/linkImage"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleText"
             tools:text="css-tricks.com" />
@@ -100,21 +102,6 @@
             app:layout_constraintTop_toBottomOf="@+id/urlText"
             tools:text="27 comments" />
 
-        <ImageView
-            android:id="@+id/linkImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginBottom="16dp"
-            android:contentDescription="@string/link_image_description"
-            app:displayIfNotNull="@{newsItem.url}"
-            app:layout_constraintBottom_toTopOf="@+id/commentNumberText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_link_50"
-            app:tint="?attr/colorTertiary" />
-
         <TextView
             android:id="@+id/commentHeaderText"
             style="@style/TextAppearance.BodyMedium"
@@ -123,7 +110,7 @@
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_normal"
             android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_marginBottom="32dp"
             app:displayHTML="@{newsItem.text}"
             app:displayIfNotNull="@{newsItem.text}"
             app:layout_constraintBottom_toBottomOf="parent"

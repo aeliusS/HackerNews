@@ -1,13 +1,17 @@
 package com.example.android.hackernews.commentslist
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import com.example.android.hackernews.R
 import com.example.android.hackernews.commentslist.adapter.ExpandableComment
 import com.example.android.hackernews.databinding.FragmentCommentsBinding
 import com.xwray.groupie.GroupieAdapter
@@ -34,21 +38,46 @@ class CommentsListFragment : Fragment() {
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.viewModel = viewModel
 
-
+        setupMenuOptions()
         getHeaderAndComments()
 
         val adapter = GroupieAdapter().apply {
             setOnItemClickListener(onCommentClickListener)
         }
         binding.commentsListRecyclerView.adapter = adapter
+    }
 
-        // TODO: update NewsItem header item
+    private fun setupMenuOptions() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.comments_fragment_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
+                when (menuItem.itemId) {
+                    R.id.refresh_comments -> {
+                        getHeaderAndComments()
+                        true
+                    }
+                    R.id.open_link -> {
+                        viewModel.headerItem.value?.let { newsItem ->
+                            newsItem.url?.let {
+                                openWebPage(it)
+                            }
+                        }
+                        true
+                    }
+                    else -> false
+                }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun getHeaderAndComments() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.updateHeader()
             viewModel.getComments()
+            Log.d(TAG, "finished updating header item and comments")
         }
     }
 
@@ -59,7 +88,13 @@ class CommentsListFragment : Fragment() {
         }
     }
 
-    // TODO: create menu for refresh and link
+    private fun openWebPage(url: String) {
+        val webpage: Uri = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivity(intent)
+        }
+    }
 
     companion object {
         private const val TAG = "CommentsListFragment"

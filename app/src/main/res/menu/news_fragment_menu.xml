@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!--
     <item
         android:id="@+id/search"
         android:icon="@drawable/ic_baseline_search_24"
@@ -14,6 +15,14 @@
         android:icon="@drawable/ic_baseline_filter_list_24"
         android:title="@string/filter_news"
         android:contentDescription="@string/content_description_filter_news"
+        app:showAsAction="ifRoom" />
+     -->
+
+    <item
+        android:id="@+id/refresh_news"
+        android:icon="@drawable/ic_baseline_refresh_24"
+        android:title="@string/refresh"
+        android:contentDescription="@string/refresh_content_description"
         app:showAsAction="ifRoom" />
 
     <item
