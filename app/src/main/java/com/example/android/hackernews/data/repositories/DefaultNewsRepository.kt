@@ -8,7 +8,9 @@ import com.example.android.hackernews.data.Result
 import com.example.android.hackernews.data.entities.TopStory
 import com.example.android.hackernews.utils.wrapEspressoIdlingResource
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
@@ -43,21 +45,30 @@ class DefaultNewsRepository @Inject constructor(
             when (val result = newsRemoteDataSource.getTopStoryIds()) {
                 is Result.Success<*> -> {
                     val topStoryIds = result.data as List<TopStory>
-                    newsLocalDataSource.insertTopStoryIds(topStoryIds)
-                    newsLocalDataSource.refreshTopStoryIds(Calendar.getInstance())
+                    newsLocalDataSource.refreshTopStoryIds(topStoryIds)
                 }
                 is Result.Error -> Log.e(TAG, "Error getting top stories: ${result.message}")
             }
         }
     }
 
-    suspend fun updateTopStories() = withContext(ioDispatcher) {
+    suspend fun updateTopStoriesFromRemote(resume: Boolean = false) = withContext(ioDispatcher) {
         wrapEspressoIdlingResource {
-            val topStoryIds = newsLocalDataSource.getTopStoryIds()
-            for (topStoryId in topStoryIds) {
+            val topStoryIds = when (resume) {
+                true -> newsLocalDataSource.getTopStoryIdsUndated() ?: return@withContext
+                false -> newsLocalDataSource.getTopStoryIds() ?: return@withContext
+            }
+            Log.d(TAG, "updateTopStoriesFromRemote called")
+            val calendar = Calendar.getInstance()
+            topStoryIds.forEach { topStoryId ->
+                // break from loop if cancelled
+                ensureActive()
                 val newsItem = service.getNewsItem(topStoryId.itemId)
                 newsItem?.let {
-                    newsLocalDataSource.upsertNewsItemPartial(newsItem)
+                    newsLocalDataSource.upsertNewsItemPartial(newsItem.apply {
+                        this.rank = topStoryId.rank
+                    })
+                    newsLocalDataSource.updateTopStory(topStoryId.apply { itemDate = calendar })
                 }
             }
         }
@@ -79,11 +90,13 @@ class DefaultNewsRepository @Inject constructor(
 
     private suspend fun getChildrenFromRemoteHelper(newsItem: NewsItem) {
         if (newsItem.kids.isNullOrEmpty()) return
-        // var newsComments: MutableList<NewsItem> = mutableListOf()
-        for (child in newsItem.kids) {
+        newsItem.kids.forEachIndexed { index, child ->
+            ioDispatcher.ensureActive()
             val newsComment = service.getNewsItem(child)
             newsComment?.let {
-                newsLocalDataSource.upsertNewsItemPartial(newsComment)
+                newsLocalDataSource.upsertNewsItemPartial(newsComment.apply {
+                    this.rank = index
+                })
                 getChildrenFromRemoteHelper(newsComment)
             }
         }

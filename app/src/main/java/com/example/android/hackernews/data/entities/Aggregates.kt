@@ -16,7 +16,7 @@ data class TopStory(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") override val id: Long = 0L,
     @ColumnInfo(name = "item_id") override val itemId: Long,
-    @ColumnInfo(name = "item_date") override val itemDate: Calendar? = null,
+    @ColumnInfo(name = "item_date") override var itemDate: Calendar? = null,
     val rank: Int
 ) : AggregateEntity
 

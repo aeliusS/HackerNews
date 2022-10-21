@@ -23,19 +23,20 @@ fun List<Long>.toNewStories(): List<NewStories> {
 fun NewsItem.toPartial(): NewsItemPartial {
     return NewsItemPartial(
         id = id,
-        deleted= deleted,
-        type=type,
+        deleted = deleted,
+        type = type,
         by = author,
-        time=time,
-        text=text,
-        dead=dead,
-        parent=parent,
-        poll=poll,
-        kids=kids,
-        url=url,
-        score=score,
-        title=title,
-        parts=parts,
-        descendants=descendants,
+        time = time,
+        text = text,
+        dead = dead,
+        parent = parent,
+        poll = poll,
+        kids = kids,
+        url = url,
+        score = score,
+        title = title,
+        parts = parts,
+        descendants = descendants,
+        rank = rank
     )
 }

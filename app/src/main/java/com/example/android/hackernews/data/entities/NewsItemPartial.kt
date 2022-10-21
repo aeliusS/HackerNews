@@ -20,4 +20,5 @@ data class NewsItemPartial(
     val title: String?,
     val parts: List<Long>?,
     val descendants: Int?,
+    val rank: Int
 )

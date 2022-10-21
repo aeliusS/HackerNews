@@ -26,17 +26,20 @@ class NewsLocalDataSource @Inject constructor(
 
     fun getTopStories() = newsItemDao.getTopStories()
 
-    suspend fun insertTopStoryIds(topStories: List<TopStory>) = topStoryDao.insertAll(topStories)
+    suspend fun updateTopStory(topStory: TopStory) = topStoryDao.update(topStory)
 
     suspend fun upsertNewsItemPartial(newsItem: NewsItem) = newsItemDao.upsertItem(newsItem)
 
     suspend fun updateNewsItem(newsItem: NewsItem) = newsItemDao.updateItem(newsItem)
 
-    suspend fun refreshTopStoryIds(calendar: Calendar) = topStoryDao.refreshTopStories(calendar)
+    suspend fun refreshTopStoryIds(topStories: List<TopStory>) =
+        topStoryDao.refreshTopStories(topStories)
 
     suspend fun getTopStoryIds() = topStoryDao.getTopStoryIds()
 
     suspend fun getTopStoryUpdateDate() = topStoryDao.getUpdateDate()
+
+    suspend fun getTopStoryIdsUndated() = topStoryDao.getTopStoryIdsUndated()
 
     companion object {
         // for singleton instantiation

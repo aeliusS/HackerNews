@@ -8,10 +8,14 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.android.hackernews.R
 import com.example.android.hackernews.databinding.FragmentNewsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class NewsListFragment : Fragment() {
@@ -34,6 +38,10 @@ class NewsListFragment : Fragment() {
         binding.lifecycleOwner = this.viewLifecycleOwner
         setupMenuOptions()
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.updateTopStories()
+        }
+
         binding.viewModel = viewModel
 
         val adapter = NewsListAdapter(NewsClickListener { newsItem ->
@@ -42,13 +50,6 @@ class NewsListFragment : Fragment() {
             )
         })
         binding.newsListRecyclerView.adapter = adapter
-
-        /*
-        // set lift on scroll view id
-        requireActivity()
-            .findViewById<AppBarLayout>(R.id.appBarLayout)
-            .liftOnScrollTargetViewId = binding.newsListRecyclerView.id
-         */
 
         // TODO: remove after testing
         viewModel.topStories.observe(viewLifecycleOwner) {

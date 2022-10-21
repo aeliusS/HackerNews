@@ -70,20 +70,18 @@ interface NewsItemDao {
     suspend fun removeStaleStories()
 
     companion object {
-        // TODO: switch to rank order
         private const val GET_CHILD_COMMENTS = """
             SELECT * FROM news_items 
             WHERE parent IN (:itemId) AND (dead IS NULL OR dead IS FALSE)
                 AND (deleted IS NULL OR deleted IS FALSE)
-            ORDER BY id ASC
+            ORDER BY rank ASC
         """
 
         private const val NEWS_ITEMS_TOP_STORIES = """
             SELECT nt.* FROM news_items as nt
             INNER JOIN top_stories AS top ON top.item_id = nt.id
-            WHERE top.item_date IS NOT NULL 
-                    AND (nt.dead IS null OR nt.dead IS FALSE)
-            ORDER BY top.rank ASC
+            WHERE nt.dead IS null OR nt.dead IS FALSE
+            ORDER BY nt.rank ASC
         """
 
         private const val NEWS_ITEMS_NEW_STORIES = """

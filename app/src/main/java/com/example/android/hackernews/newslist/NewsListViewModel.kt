@@ -21,24 +21,16 @@ class NewsListViewModel @Inject internal constructor(
 
     // TODO: use mutable state flow to set recycler view list
 
-    init {
-        Log.d(TAG, "NewsListViewModel initiated")
-        updateTopStories()
-    }
-
-    // TODO: add updating notification
-
-    private fun updateTopStories() {
-        viewModelScope.launch {
-            if (!shouldUpdateTopStories()) return@launch
-            Log.d(TAG, "updating top stories")
-            // TODO: get result and display error
-            newsRepository.updateTopStoryIdsRemote()
-            newsRepository.updateTopStories()
-            // newsRepository.updateTopStoriesWithComments() // too expensive
-
-            // TODO: do update top stories partial
+    // TODO: display error
+    suspend fun updateTopStories() {
+        Log.d(TAG,"updateTopStories called")
+        if (!shouldUpdateTopStories()) {
+            newsRepository.updateTopStoriesFromRemote(true)
+            return
         }
+        Log.d(TAG, "updating top stories")
+        newsRepository.updateTopStoryIdsRemote()
+        newsRepository.updateTopStoriesFromRemote()
     }
 
     /**
