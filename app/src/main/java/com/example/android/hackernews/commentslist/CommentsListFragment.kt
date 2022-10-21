@@ -5,14 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.android.hackernews.commentslist.adapter.ExpandableComment
 import com.example.android.hackernews.databinding.FragmentCommentsBinding
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.OnItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CommentsListFragment : Fragment() {
@@ -33,14 +34,22 @@ class CommentsListFragment : Fragment() {
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.viewModel = viewModel
 
+
+        getHeaderAndComments()
+
         val adapter = GroupieAdapter().apply {
             setOnItemClickListener(onCommentClickListener)
         }
         binding.commentsListRecyclerView.adapter = adapter
 
         // TODO: update NewsItem header item
+    }
 
-        // TODO: display top border for top level comments
+    private fun getHeaderAndComments() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.updateHeader()
+            viewModel.getComments()
+        }
     }
 
     private val onCommentClickListener = OnItemClickListener { item, _ ->

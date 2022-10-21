@@ -12,6 +12,10 @@
         <variable
             name="clickListener"
             type="com.example.android.hackernews.newslist.NewsClickListener" />
+
+        <variable
+            name="clickType"
+            type="com.example.android.hackernews.newslist.ClickType" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -26,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorSecondaryContainer"
-            android:onClick="@{() -> clickListener.onClick(newsItem)}">
+            android:onClick="@{() -> clickListener.onClick(newsItem, clickType.BODY)}">
 
             <TextView
                 android:id="@+id/titleText"
@@ -36,6 +40,7 @@
                 android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:layout_marginEnd="@dimen/margin_normal"
+                android:onClick="@{() -> clickListener.onClick(newsItem, clickType.URL)}"
                 app:displayHTML="@{newsItem.title}"
                 app:layout_constraintEnd_toStartOf="@+id/commentImage"
                 app:layout_constraintStart_toStartOf="parent"

@@ -31,6 +31,7 @@ class NewsListAdapter(private val clickListener: NewsClickListener) :
             binding.clickListener = listener
             binding.executePendingBindings()
         }
+
         companion object {
             // to create new view holders
             fun from(parent: ViewGroup): NewsListViewHolder {
@@ -50,6 +51,10 @@ class NewsListAdapter(private val clickListener: NewsClickListener) :
     }
 }
 
-class NewsClickListener(val clickListener: (newsItem: NewsItem) -> Unit) {
-    fun onClick(newsItem: NewsItem) = clickListener(newsItem)
+enum class ClickType {
+    BODY, URL
+}
+
+class NewsClickListener(val clickListener: (newsItem: NewsItem, clickType: ClickType) -> Unit) {
+    fun onClick(newsItem: NewsItem, clickType: ClickType) = clickListener(newsItem, clickType)
 }

@@ -1,5 +1,7 @@
 package com.example.android.hackernews.newslist
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -12,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.android.hackernews.R
+import com.example.android.hackernews.data.entities.NewsItem
 import com.example.android.hackernews.databinding.FragmentNewsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
@@ -44,10 +47,14 @@ class NewsListFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        val adapter = NewsListAdapter(NewsClickListener { newsItem ->
-            this.findNavController().navigate(
-                NewsListFragmentDirections.actionNewsListFragmentToCommentsListFragment(newsItem)
-            )
+        val adapter = NewsListAdapter(NewsClickListener { newsItem, clickType ->
+            when (clickType) {
+                ClickType.URL -> {
+                    if (!newsItem.url.isNullOrBlank()) openWebPage(newsItem.url)
+                    else navigateToComment(newsItem)
+                }
+                ClickType.BODY -> navigateToComment(newsItem)
+            }
         })
         binding.newsListRecyclerView.adapter = adapter
 
@@ -79,6 +86,20 @@ class NewsListFragment : Fragment() {
                     else -> false
                 }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun navigateToComment(newsItem: NewsItem) {
+        this.findNavController().navigate(
+            NewsListFragmentDirections.actionNewsListFragmentToCommentsListFragment(newsItem)
+        )
+    }
+
+    private fun openWebPage(url: String) {
+        val webpage: Uri = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivity(intent)
+        }
     }
 
     companion object {
