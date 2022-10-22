@@ -6,8 +6,6 @@ import android.text.format.DateUtils
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -101,8 +99,16 @@ fun displayTime(textView: TextView, timeUTC: Long?) {
     )
 }
 
-@BindingAdapter("displayHTML")
-fun displayHTML(textView: TextView, text: String?) {
+@BindingAdapter("displayHTML", "isExpanded")
+fun displayHTMLOrBlank(textView: TextView, text: String?, isExpanded: Boolean?) {
+    // don't display text if it is not expanded
+    // bug with groupie
+    isExpanded?.let {
+        if (!isExpanded) {
+            textView.text = ""
+            return
+        }
+    }
     textView.text = if (text == null) "~NO DATA~"
     else {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

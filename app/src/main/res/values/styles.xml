@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="TextAppearance.TitleText" parent="TextAppearance.Material3.TitleMedium">
-        <item name="android:textColor">?attr/colorOnSecondaryContainer</item>
+        <item name="android:textColor">?attr/colorOnPrimaryContainer</item>
         <item name="fontFamily">@font/roboto_bold</item>
     </style>
     <style name="TextAppearance.BodyMedium" parent="TextAppearance.Material3.BodyMedium">

@@ -14,7 +14,7 @@
         android:id="@+id/commentItemMotionLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSecondaryContainer"
+        android:background="?attr/colorPrimaryContainer"
         app:layoutDescription="@xml/list_item_comments_scene">
 
         <LinearLayout
@@ -37,7 +37,7 @@
             app:layout_constraintStart_toEndOf="@id/separatorContainer"
             app:layout_constraintTop_toTopOf="@+id/commentAuthor"
             app:srcCompat="@drawable/expand"
-            app:tint="?attr/colorOnSecondaryContainer" />
+            app:tint="?attr/colorPrimaryContainer" />
 
         <TextView
             android:id="@+id/commentAuthor"
@@ -85,6 +85,7 @@
             android:layout_marginBottom="8dp"
             android:visibility="@{newsItem.isExpanded ? View.VISIBLE : View.GONE}"
             app:displayHTML="@{newsItem.text}"
+            app:isExpanded="@{newsItem.isExpanded}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/commentAuthor"

@@ -29,7 +29,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorSecondaryContainer"
+            android:background="?attr/colorPrimaryContainer"
             android:onClick="@{() -> clickListener.onClick(newsItem, clickType.BODY)}">
 
             <TextView
@@ -42,6 +42,7 @@
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:onClick="@{() -> clickListener.onClick(newsItem, clickType.URL)}"
                 app:displayHTML="@{newsItem.title}"
+                app:isExpanded="@{true}"
                 app:layout_constraintEnd_toStartOf="@+id/commentImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
