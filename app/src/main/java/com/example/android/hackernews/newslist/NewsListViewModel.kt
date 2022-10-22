@@ -27,7 +27,7 @@ class NewsListViewModel @Inject internal constructor(
     suspend fun refreshTopStories(force: Boolean = false) = wrapApiStatusError(_apiStatus) {
         if (!shouldUpdateTopStories() && !force) {
             newsRepository.updateTopStoriesFromRemote(true)
-            return
+            return@wrapApiStatusError
         }
         Log.d(TAG, "updating top stories")
         newsRepository.updateTopStoryIdsRemote()

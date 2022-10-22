@@ -45,6 +45,10 @@ fun NewsItem.toPartial(): NewsItemPartial {
 }
 
 inline fun <T> wrapApiStatusError(status: MutableLiveData<ApiStatus>, function: () -> T) {
+    if (status.value == ApiStatus.LOADING) {
+        Log.w("wrapApiStatusError", "API in loading status")
+        return
+    }
     status.value = ApiStatus.LOADING
     try {
         function()
