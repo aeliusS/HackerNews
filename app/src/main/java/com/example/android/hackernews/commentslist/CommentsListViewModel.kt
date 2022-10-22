@@ -1,8 +1,10 @@
 package com.example.android.hackernews.commentslist
 
 import androidx.lifecycle.*
+import com.example.android.hackernews.data.ApiStatus
 import com.example.android.hackernews.data.entities.NewsItem
 import com.example.android.hackernews.data.repositories.DefaultNewsRepository
+import com.example.android.hackernews.utils.wrapApiStatusError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,19 +24,22 @@ class CommentsListViewModel @Inject internal constructor(
         newsRepository.getAllChildrenFromLocal(newsItem.id).asLiveData()
     }
 
-    suspend fun updateHeader() {
+    private val _apiStatus = MutableLiveData<ApiStatus>()
+    val apiStatus: LiveData<ApiStatus>
+        get() = _apiStatus
+
+    suspend fun updateHeaderAndComments() = wrapApiStatusError(_apiStatus) {
         headerItem.value?.let {
             newsRepository.refreshNewsItem(it.id)
-        }
-    }
-
-    suspend fun getComments() {
-        headerItem.value?.let {
             newsRepository.getChildrenFromRemote(it)
         }
     }
 
     fun toggleIsExpanded(newsItem: NewsItem) = viewModelScope.launch {
         newsRepository.updateNewsItem(newsItem.copy(isExpanded = !newsItem.isExpanded))
+    }
+
+    fun finishedDisplayingApiErrorMessage() {
+        _apiStatus.value = ApiStatus.DONE
     }
 }

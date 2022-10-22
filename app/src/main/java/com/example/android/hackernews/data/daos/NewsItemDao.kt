@@ -100,7 +100,7 @@ interface NewsItemDao {
             DELETE FROM news_items
             WHERE id IN (
                 SELECT nt.id FROM news_items AS nt
-                LEFT JOIN top_stories AS top ON top.item_id = nt.id
+                LEFT JOIN top_stories AS top ON top.item_id = nt.id OR top.item_id = nt.top_level_parent
                 LEFT JOIN new_stories AS new ON new.item_id = nt.id
                 LEFT JOIN best_stories AS best ON best.item_id = nt.id
                 WHERE top.item_id IS null AND new.item_id IS null 

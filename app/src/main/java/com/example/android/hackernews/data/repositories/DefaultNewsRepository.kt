@@ -7,11 +7,8 @@ import com.example.android.hackernews.di.IoDispatcher
 import com.example.android.hackernews.data.Result
 import com.example.android.hackernews.data.entities.TopStory
 import com.example.android.hackernews.utils.wrapEspressoIdlingResource
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,9 +23,6 @@ class DefaultNewsRepository @Inject constructor(
     init {
         Log.d(TAG, "DefaultNewsRepository initiated")
     }
-
-    fun getNewsItem(newsItemId: Long) = newsLocalDataSource.getNewsItem(newsItemId)
-        .flowOn(ioDispatcher)
 
     fun getTopStories() = newsLocalDataSource.getTopStories()
         .flowOn(ioDispatcher)
@@ -71,7 +65,6 @@ class DefaultNewsRepository @Inject constructor(
                 true -> newsLocalDataSource.getTopStoryIdsUndated() ?: return@withContext
                 false -> newsLocalDataSource.getTopStoryIds() ?: return@withContext
             }
-            Log.d(TAG, "updateTopStoriesFromRemote called")
             val calendar = Calendar.getInstance()
             topStoryIds.forEach { topStoryId ->
                 // break from loop if cancelled
@@ -89,28 +82,32 @@ class DefaultNewsRepository @Inject constructor(
 
     suspend fun updateTopStoriesWithCommentsFromRemote() = withContext(ioDispatcher) {
         wrapEspressoIdlingResource {
-            getTopStories().collect { newsItems ->
-                for (news in newsItems) {
-                    getChildrenFromRemote(news)
-                }
+            val topStories = getTopStories().first()
+            topStories.forEach {
+                ensureActive()
+                getChildrenFromRemote(it)
             }
         }
     }
 
     suspend fun getChildrenFromRemote(newsItem: NewsItem) = withContext(ioDispatcher) {
-        getChildrenFromRemoteHelper(newsItem)
+        wrapEspressoIdlingResource {
+            getChildrenFromRemoteHelper(newsItem, newsItem.id)
+        }
     }
 
-    private suspend fun getChildrenFromRemoteHelper(newsItem: NewsItem) {
+    private suspend fun getChildrenFromRemoteHelper(newsItem: NewsItem, topLevelParent: Long) {
         if (newsItem.kids.isNullOrEmpty()) return
+
         newsItem.kids.forEachIndexed { index, child ->
-            ioDispatcher.ensureActive()
+            yield() // in case of cancel
             val newsComment = service.getNewsItem(child)
             newsComment?.let {
                 newsLocalDataSource.upsertNewsItemPartial(newsComment.apply {
                     this.rank = index
+                    this.topLevelParent = topLevelParent
                 })
-                getChildrenFromRemoteHelper(newsComment)
+                getChildrenFromRemoteHelper(newsComment, topLevelParent)
             }
         }
     }

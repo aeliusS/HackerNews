@@ -19,4 +19,7 @@
     </string>
     <string name="lorem_ipsum_small_paragraph">Sed id integre senserit. Mel sumo similique in, at eos inani epicuri abhorreant. Vel no gubergren dissentias instructior. His soleat putant imperdiet an. Te maiorum volumus eam, nam laoreet expetendis contentiones no. Sed ex aeterno adolescens, ut quaeque bonorum nusquam sea.</string>
     <string name="expand_comment_arrow_description">expand comment</string>
+
+    <string name="api_error_message">Could not refresh data</string>
+    <string name="try_again">Try Again</string>
 </resources>

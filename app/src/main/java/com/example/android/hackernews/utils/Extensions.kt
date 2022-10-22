@@ -1,5 +1,8 @@
 package com.example.android.hackernews.utils
 
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import com.example.android.hackernews.data.ApiStatus
 import com.example.android.hackernews.data.entities.*
 
 fun List<Long>.toTopStories(): List<TopStory> {
@@ -39,4 +42,16 @@ fun NewsItem.toPartial(): NewsItemPartial {
         descendants = descendants,
         rank = rank
     )
+}
+
+inline fun <T> wrapApiStatusError(status: MutableLiveData<ApiStatus>, function: () -> T) {
+    status.value = ApiStatus.LOADING
+    try {
+        function()
+    } catch (e: Exception) {
+        Log.w("wrapApiStatusError", "exception: ${e.localizedMessage}")
+        status.value = ApiStatus.ERROR
+    } finally {
+        if (status.value != ApiStatus.ERROR) status.value = ApiStatus.DONE
+    }
 }

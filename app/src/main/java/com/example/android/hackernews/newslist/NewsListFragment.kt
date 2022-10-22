@@ -11,13 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.android.hackernews.R
+import com.example.android.hackernews.data.ApiStatus
 import com.example.android.hackernews.data.entities.NewsItem
 import com.example.android.hackernews.databinding.FragmentNewsBinding
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -39,11 +39,10 @@ class NewsListFragment : Fragment() {
 
         // Set the lifecycle owner to the lifecycle of the view
         binding.lifecycleOwner = this.viewLifecycleOwner
-        setupMenuOptions()
-
-        updateTopStories()
-
         binding.viewModel = viewModel
+
+        setupMenuOptions()
+        updateTopStories()
 
         val adapter = NewsListAdapter(NewsClickListener { newsItem, clickType ->
             when (clickType) {
@@ -56,7 +55,9 @@ class NewsListFragment : Fragment() {
         })
         binding.newsListRecyclerView.adapter = adapter
 
-        // TODO: remove after testing
+        viewModel.apiStatus.observe(viewLifecycleOwner) { handleApiStatus(it) }
+
+        // TODO: remove both after testing
         viewModel.topStories.observe(viewLifecycleOwner) {
             Log.d(TAG, "Number of top stories: ${it.size}")
         }
@@ -89,7 +90,7 @@ class NewsListFragment : Fragment() {
 
     private fun updateTopStories(force: Boolean = false) {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.updateTopStories(force)
+            viewModel.refreshTopStories(force)
         }
     }
 
@@ -104,6 +105,20 @@ class NewsListFragment : Fragment() {
         val intent = Intent(Intent.ACTION_VIEW, webpage)
         if (intent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(intent)
+        }
+    }
+
+    private fun handleApiStatus(status: ApiStatus) {
+        when (status) {
+            ApiStatus.ERROR -> {
+                Snackbar.make(binding.root, R.string.api_error_message, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.try_again) {
+                        updateTopStories()
+                    }
+                    .show()
+                viewModel.finishedDisplayingApiErrorMessage()
+            }
+            else -> {}
         }
     }
 

@@ -13,7 +13,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.example.android.hackernews.R
 import com.example.android.hackernews.commentslist.adapter.ExpandableComment
+import com.example.android.hackernews.data.ApiStatus
 import com.example.android.hackernews.databinding.FragmentCommentsBinding
+import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.OnItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,6 +47,8 @@ class CommentsListFragment : Fragment() {
             setOnItemClickListener(onCommentClickListener)
         }
         binding.commentsListRecyclerView.adapter = adapter
+
+        viewModel.apiStatus.observe(viewLifecycleOwner) { handleApiStatus(it) }
     }
 
     private fun setupMenuOptions() {
@@ -75,8 +79,7 @@ class CommentsListFragment : Fragment() {
 
     private fun getHeaderAndComments() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.updateHeader()
-            viewModel.getComments()
+            viewModel.updateHeaderAndComments()
             Log.d(TAG, "finished updating header item and comments")
         }
     }
@@ -93,6 +96,20 @@ class CommentsListFragment : Fragment() {
         val intent = Intent(Intent.ACTION_VIEW, webpage)
         if (intent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(intent)
+        }
+    }
+
+    private fun handleApiStatus(status: ApiStatus) {
+        when (status) {
+            ApiStatus.ERROR -> {
+                Snackbar.make(binding.root, R.string.api_error_message, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.try_again) {
+                        getHeaderAndComments()
+                    }
+                    .show()
+                viewModel.finishedDisplayingApiErrorMessage()
+            }
+            else -> {}
         }
     }
 

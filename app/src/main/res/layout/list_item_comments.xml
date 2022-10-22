@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
         <variable
             name="newsItem"
             type="com.example.android.hackernews.data.entities.NewsItem" />
@@ -37,7 +36,7 @@
             app:layout_constraintStart_toEndOf="@id/separatorContainer"
             app:layout_constraintTop_toTopOf="@+id/commentAuthor"
             app:srcCompat="@drawable/expand"
-            app:tint="?attr/colorPrimaryContainer" />
+            app:tint="?attr/colorOnPrimaryContainer" />
 
         <TextView
             android:id="@+id/commentAuthor"
@@ -83,7 +82,6 @@
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:visibility="@{newsItem.isExpanded ? View.VISIBLE : View.GONE}"
             app:displayHTML="@{newsItem.text}"
             app:isExpanded="@{newsItem.isExpanded}"
             app:layout_constraintBottom_toBottomOf="parent"

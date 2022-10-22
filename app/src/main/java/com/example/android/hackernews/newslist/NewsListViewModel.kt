@@ -2,13 +2,14 @@ package com.example.android.hackernews.newslist
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import com.example.android.hackernews.data.ApiStatus
 import com.example.android.hackernews.data.entities.NewsItem
 import com.example.android.hackernews.data.repositories.DefaultNewsRepository
+import com.example.android.hackernews.utils.wrapApiStatusError
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -19,8 +20,11 @@ class NewsListViewModel @Inject internal constructor(
 
     val topStories: LiveData<List<NewsItem>> = newsRepository.getTopStories().asLiveData()
 
-    // TODO: display error
-    suspend fun updateTopStories(force: Boolean = false) {
+    private val _apiStatus = MutableLiveData<ApiStatus>()
+    val apiStatus: LiveData<ApiStatus>
+        get() = _apiStatus
+
+    suspend fun refreshTopStories(force: Boolean = false) = wrapApiStatusError(_apiStatus) {
         if (!shouldUpdateTopStories() && !force) {
             newsRepository.updateTopStoriesFromRemote(true)
             return
@@ -45,6 +49,10 @@ class NewsListViewModel @Inject internal constructor(
         Log.d(TAG, "Minutes since last update: $minutes")
         if (minutes >= 10) return true
         return false
+    }
+
+    fun finishedDisplayingApiErrorMessage() {
+        _apiStatus.value = ApiStatus.DONE
     }
 
     companion object {

@@ -102,7 +102,7 @@ fun displayTime(textView: TextView, timeUTC: Long?) {
 @BindingAdapter("displayHTML", "isExpanded")
 fun displayHTMLOrBlank(textView: TextView, text: String?, isExpanded: Boolean?) {
     // don't display text if it is not expanded
-    // bug with groupie
+    // bug with groupie on visibility
     isExpanded?.let {
         if (!isExpanded) {
             textView.text = ""

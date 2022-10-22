@@ -33,14 +33,15 @@ data class NewsItem(
     val descendants: Int? = null, // number of comments
 
     // additional custom field
+    var rank: Int = 0,
     val bookmarked: Boolean = false,
-    var isExpanded: Boolean = true,
-    var rank: Int = 0
+    @ColumnInfo(name = "is_expanded") var isExpanded: Boolean = true,
+    @ColumnInfo(name = "top_level_parent") var topLevelParent: Long? = null
 ) : Parcelable {
 
     /**
-     * couldn't include the ignored variable in the constructor
-     * using @JvmOverloads is an option, but it introduces other compilation problems
+     * Couldn't include the ignored variable in the constructor.
+     * Using @JvmOverloads is an option, but it introduces other compilation problems
      * b/c of default values
      * */
     @IgnoredOnParcel
@@ -67,7 +68,9 @@ data class NewsItem(
                         this.descendants == other.descendants &&
                         this.bookmarked == other.bookmarked &&
                         this.childNewsItems == other.childNewsItems &&
-                        this.isExpanded == other.isExpanded
+                        this.isExpanded == other.isExpanded &&
+                        this.rank == other.rank &&
+                        this.topLevelParent == other.topLevelParent
                 )
     }
 
@@ -90,6 +93,8 @@ data class NewsItem(
         result = 31 * result + bookmarked.hashCode()
         result = 31 * result + (childNewsItems?.hashCode() ?: 0)
         result = 31 * result + isExpanded.hashCode()
+        result = 31 * result + rank.hashCode()
+        result = 31 * result + topLevelParent.hashCode()
         return result
     }
 }
