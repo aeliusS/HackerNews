@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -26,8 +27,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class NewsListFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
-    private var refreshIcon: View? = null
-    var finished = true
     private val viewModel: NewsListViewModel by viewModels()
 
     override fun onCreateView(
@@ -63,7 +62,7 @@ class NewsListFragment : Fragment() {
 
         viewModel.apiStatus.observe(viewLifecycleOwner) { handleApiStatus(it) }
 
-        // TODO: remove both after testing
+        // TODO: remove after testing
         viewModel.topStories.observe(viewLifecycleOwner) {
             Log.d(TAG, "Number of top stories: ${it.size}")
         }
@@ -79,10 +78,7 @@ class NewsListFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
                 when (menuItem.itemId) {
                     R.id.refresh_news -> {
-                        val refreshIcon = requireActivity().findViewById<View>(R.id.refresh_news)
-                        wrapRotateMenuIcon(refreshIcon) {
-                            updateTopStories(true)
-                        }
+                        updateTopStories(true)
                         true
                     }
                     R.id.settings -> {
@@ -96,27 +92,8 @@ class NewsListFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    inline fun <T> wrapRotateMenuIcon(icon: View?, function: () -> T) {
-        if (icon == null) Log.d("wrapRotateMenuIcon", "null icon")
-        val animator = ObjectAnimator.ofFloat(icon, View.ROTATION, -360f, 0f)
-        var finished = false
-        animator.duration = 1000
-        animator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                if (!finished) animator.start()
-            }
-        })
-        animator.start()
-        try {
-            function()
-        } catch (e: Exception) {
-            Log.e("wrapRotateMenuIcon", "Error animating object: ${e.localizedMessage}")
-        } finally {
-            finished = true
-        }
-    }
-
     private fun updateTopStories(force: Boolean = false) {
+        rotateRefreshIcon()
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.refreshTopStories(force)
         }
@@ -145,14 +122,25 @@ class NewsListFragment : Fragment() {
                     }
                     .show()
                 viewModel.finishedDisplayingApiErrorMessage()
-                finished = true
             }
-            ApiStatus.LOADING -> {
-                finished = false
-            }
-            else -> {
-                finished = true
-            }
+            else -> {}
+        }
+    }
+
+    private fun rotateRefreshIcon() {
+        if (viewModel.apiStatus.value == ApiStatus.LOADING) {
+            Toast.makeText(context, R.string.update_in_progress, Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            val refreshIcon = requireActivity().findViewById<View?>(R.id.refresh_news) ?: return
+            val animator = ObjectAnimator.ofFloat(refreshIcon, View.ROTATION, -360f, 0f)
+            animator.duration = 1000
+            animator.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (viewModel.apiStatus.value == ApiStatus.LOADING) animator.start()
+                }
+            })
+            animator.start()
         }
     }
 

@@ -115,17 +115,18 @@ class DefaultNewsRepository @Inject constructor(
     fun getAllChildrenFromLocal(newsItemId: Long) =
         newsLocalDataSource.getChildItems(newsItemId)
             .onEach { topChildItems ->
+                if (topChildItems == null) return@onEach
                 for (child in topChildItems) {
-                    child?.childNewsItems = child?.let { getChildrenFromLocal(it) }
+                    child.childNewsItems = getChildrenFromLocal(child)
                 }
             }
             .flowOn(ioDispatcher)
 
-    private suspend fun getChildrenFromLocal(newsItem: NewsItem): List<NewsItem?> {
+    private suspend fun getChildrenFromLocal(newsItem: NewsItem): List<NewsItem>? {
         // it queries the same table, so using first() here should be fine
-        val childItems = newsLocalDataSource.getChildItems(newsItem.id).first()
+        val childItems = newsLocalDataSource.getChildItems(newsItem.id).first() ?: return null
         for (child in childItems) {
-            child?.childNewsItems = child?.let { getChildrenFromLocal(it) }
+            child.childNewsItems = getChildrenFromLocal(child)
         }
         return childItems
     }

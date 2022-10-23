@@ -51,16 +51,16 @@ class NewsItemDaoTest {
         val topStory = newsItemDao.getTopStories().first()[0]
         val childNewsItems = newsItemDao.getChildItems(topStory.id).first()
 
-        assertThat(topStory.kids!!.size, equalTo(childNewsItems.size))
+        assertThat(topStory.kids!!.size, equalTo(childNewsItems!!.size))
         for (child in childNewsItems) {
-            assertThat(topStory.kids!!.contains(child?.id), equalTo(true))
+            assertThat(topStory.kids!!.contains(child.id), equalTo(true))
         }
     }
 
     @Test
     fun testGetChildItems_emptyData() = runBlocking {
         val childItems = newsItemDao.getChildItems(-1).first()
-        assertThat(childItems.size, equalTo(0))
+        assertThat(childItems?.size ?: 0, equalTo(0))
     }
 
     // TODO: test that bookmarked items don't get deleted

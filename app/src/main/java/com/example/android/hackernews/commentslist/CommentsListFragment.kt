@@ -1,10 +1,14 @@
 package com.example.android.hackernews.commentslist
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -78,6 +82,7 @@ class CommentsListFragment : Fragment() {
     }
 
     private fun getHeaderAndComments() {
+        rotateRefreshIcon()
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.updateHeaderAndComments()
             Log.d(TAG, "finished updating header item and comments")
@@ -110,6 +115,24 @@ class CommentsListFragment : Fragment() {
                 viewModel.finishedDisplayingApiErrorMessage()
             }
             else -> {}
+        }
+    }
+
+    // TODO: why is the id refresh_news not refresh_comments
+    private fun rotateRefreshIcon() {
+        if (viewModel.apiStatus.value == ApiStatus.LOADING) {
+            Toast.makeText(context, R.string.update_in_progress, Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            val refreshIcon = requireActivity().findViewById<View?>(R.id.refresh_news) ?: return
+            val animator = ObjectAnimator.ofFloat(refreshIcon, View.ROTATION, -360f, 0f)
+            animator.duration = 1000
+            animator.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    if (viewModel.apiStatus.value == ApiStatus.LOADING) animator.start()
+                }
+            })
+            animator.start()
         }
     }
 

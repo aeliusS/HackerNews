@@ -20,9 +20,19 @@ class CommentsListViewModel @Inject internal constructor(
     val headerItem: LiveData<NewsItem>
         get() = _headerItem
 
-    val comments: LiveData<List<NewsItem?>> = headerItem.switchMap { newsItem ->
+    val comments: LiveData<List<NewsItem>?> = headerItem.switchMap { newsItem ->
         newsRepository.getAllChildrenFromLocal(newsItem.id).asLiveData()
     }
+
+    /*
+    val headerAndComments: LiveData<List<NewsItem>> = headerItem.asFlow().combine(comments.asFlow()) { header, comments ->
+        mutableListOf(header).apply {
+            comments?.let { comments ->
+                this.addAll(comments)
+            }
+        }
+    }.asLiveData()
+     */
 
     private val _apiStatus = MutableLiveData<ApiStatus>()
     val apiStatus: LiveData<ApiStatus>

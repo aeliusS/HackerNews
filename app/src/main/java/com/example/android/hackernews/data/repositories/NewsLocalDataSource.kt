@@ -6,7 +6,6 @@ import com.example.android.hackernews.data.entities.NewsItem
 import com.example.android.hackernews.data.entities.TopStory
 import com.example.android.hackernews.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
-import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
 

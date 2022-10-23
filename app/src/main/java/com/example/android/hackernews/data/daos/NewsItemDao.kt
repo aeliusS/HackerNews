@@ -52,7 +52,7 @@ interface NewsItemDao {
     fun getItems(itemIds: List<Long>): Flow<List<NewsItem>>
 
     @Query(GET_CHILD_COMMENTS)
-    fun getChildItems(itemId: Long): Flow<List<NewsItem?>>
+    fun getChildItems(itemId: Long): Flow<List<NewsItem>?>
 
     @Transaction
     @Query(NEWS_ITEMS_TOP_STORIES)
