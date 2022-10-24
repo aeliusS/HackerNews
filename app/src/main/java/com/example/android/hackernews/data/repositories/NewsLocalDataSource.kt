@@ -15,8 +15,7 @@ import javax.inject.Singleton
 @Singleton
 class NewsLocalDataSource @Inject constructor(
     private val newsItemDao: NewsItemDao,
-    private val topStoryDao: TopStoryDao,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val topStoryDao: TopStoryDao
 ) {
     fun getChildItems(itemId: Long) = newsItemDao.getChildItems(itemId)
 
@@ -39,23 +38,4 @@ class NewsLocalDataSource @Inject constructor(
 
     suspend fun getTopStoryIdsUndated() = topStoryDao.getTopStoryIdsUndated()
 
-    companion object {
-        // for singleton instantiation
-        @Volatile
-        private var instance: NewsLocalDataSource? = null
-
-        fun getInstance(
-            newsItemDao: NewsItemDao,
-            topStoryDao: TopStoryDao,
-            ioDispatcher: CoroutineDispatcher
-        ) {
-            instance ?: synchronized(this) {
-                instance ?: NewsLocalDataSource(
-                    newsItemDao,
-                    topStoryDao,
-                    ioDispatcher
-                ).also { instance = it }
-            }
-        }
-    }
 }

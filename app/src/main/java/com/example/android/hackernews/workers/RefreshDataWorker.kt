@@ -2,27 +2,40 @@ package com.example.android.hackernews.workers
 
 import android.content.Context
 import android.util.Log
+import androidx.hilt.work.HiltWorker
+import androidx.preference.PreferenceManager
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.android.hackernews.data.repositories.DefaultNewsRepository
+import com.example.android.hackernews.data.repositories.NewsLocalDataSource
 import com.example.android.hackernews.di.IoDispatcher
+import com.example.android.hackernews.utils.sendNotification
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class RefreshDataWorker @Inject constructor(
-    context: Context,
-    workerParams: WorkerParameters,
-    private val newsRepository: DefaultNewsRepository,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+@HiltWorker
+class RefreshDataWorker @AssistedInject constructor(
+    @Assisted context: Context,
+    @Assisted workerParams: WorkerParameters
 ) :
     CoroutineWorker(context, workerParams) {
 
-    override suspend fun doWork(): Result = withContext(ioDispatcher) {
+    @Inject
+    lateinit var newsRepository: DefaultNewsRepository
+
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         try {
+            Log.d(TAG, "updating in the background")
             newsRepository.updateTopStoryIdsRemote()
             newsRepository.updateTopStoriesFromRemote()
             newsRepository.removeStaleStories()
+            sendNotificationForKeyword()
+            Log.d(TAG, "finished updating in the background")
             Result.success()
         } catch (ex: Exception) {
             Log.e(TAG, "Error refreshing database", ex)
@@ -30,11 +43,18 @@ class RefreshDataWorker @Inject constructor(
         }
     }
 
-    private suspend fun sendNotificationForKeyword() {
-        TODO()
+    private fun sendNotificationForKeyword() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val notification = sharedPreferences.getBoolean("notifications", false)
+        if (!notification) return
+
+        val keywordSearch = sharedPreferences.getString("keyword_search", null)
+        if (keywordSearch != null) {
+            sendNotification(applicationContext, "Test")
+        }
     }
 
     companion object {
-        private const val TAG = "RefreshDataWorker"
+        const val TAG = "RefreshDataWorker"
     }
 }
