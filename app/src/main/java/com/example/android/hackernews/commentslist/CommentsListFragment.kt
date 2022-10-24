@@ -39,6 +39,11 @@ class CommentsListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = this.viewLifecycleOwner
@@ -118,12 +123,12 @@ class CommentsListFragment : Fragment() {
         }
     }
 
-    // TODO: why is the id refresh_news not refresh_comments
     private fun rotateRefreshIcon() {
         if (viewModel.apiStatus.value == ApiStatus.LOADING) {
             Toast.makeText(context, R.string.update_in_progress, Toast.LENGTH_SHORT)
                 .show()
         } else {
+            // TODO: why is the id refresh_news not refresh_comments
             val refreshIcon = requireActivity().findViewById<View?>(R.id.refresh_news) ?: return
             val animator = ObjectAnimator.ofFloat(refreshIcon, View.ROTATION, -360f, 0f)
             animator.duration = 1000

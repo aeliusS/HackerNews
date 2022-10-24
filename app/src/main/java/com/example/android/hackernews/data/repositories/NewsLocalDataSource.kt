@@ -18,18 +18,17 @@ class NewsLocalDataSource @Inject constructor(
     private val topStoryDao: TopStoryDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
-
-    fun getNewsItem(itemId: Long) = newsItemDao.getItem(itemId)
-
     fun getChildItems(itemId: Long) = newsItemDao.getChildItems(itemId)
 
     fun getTopStories() = newsItemDao.getTopStories()
 
-    suspend fun updateTopStory(topStory: TopStory) = topStoryDao.update(topStory)
-
     suspend fun upsertNewsItemPartial(newsItem: NewsItem) = newsItemDao.upsertItem(newsItem)
 
     suspend fun updateNewsItem(newsItem: NewsItem) = newsItemDao.updateItem(newsItem)
+
+    suspend fun removeStaleStories() = newsItemDao.removeStaleStories()
+
+    suspend fun updateTopStory(topStory: TopStory) = topStoryDao.update(topStory)
 
     suspend fun refreshTopStoryIds(topStories: List<TopStory>) =
         topStoryDao.refreshTopStories(topStories)

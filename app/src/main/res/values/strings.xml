@@ -23,4 +23,5 @@
     <string name="api_error_message">Could not refresh data</string>
     <string name="try_again">Try Again</string>
     <string name="update_in_progress">Update already in progress...</string>
+    <string name="notification_permission_denied">Notification Permission denied. Enable in settings</string>
 </resources>

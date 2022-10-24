@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.android.hackernews.data.ApiStatus
 import com.example.android.hackernews.data.entities.*
+import java.net.UnknownHostException
 
 fun List<Long>.toTopStories(): List<TopStory> {
     return mapIndexed { index, element ->
@@ -52,7 +53,7 @@ inline fun <T> wrapApiStatusError(status: MutableLiveData<ApiStatus>, function: 
     status.value = ApiStatus.LOADING
     try {
         function()
-    } catch (e: Exception) {
+    } catch (e: UnknownHostException) {
         Log.w("wrapApiStatusError", "exception: ${e.localizedMessage}")
         status.value = ApiStatus.ERROR
     } finally {

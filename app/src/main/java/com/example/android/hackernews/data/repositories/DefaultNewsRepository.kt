@@ -20,9 +20,6 @@ class DefaultNewsRepository @Inject constructor(
     private val service: HackerNewsService,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
-    init {
-        Log.d(TAG, "DefaultNewsRepository initiated")
-    }
 
     fun getTopStories() = newsLocalDataSource.getTopStories()
         .flowOn(ioDispatcher)
@@ -131,7 +128,8 @@ class DefaultNewsRepository @Inject constructor(
         return childItems
     }
 
-    // TODO: update bookmarked stories
+    suspend fun removeStaleStories() = newsLocalDataSource.removeStaleStories()
+
 
     companion object {
         private const val TAG = "DefaultNewsRepository"

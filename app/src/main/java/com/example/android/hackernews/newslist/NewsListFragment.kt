@@ -38,6 +38,11 @@ class NewsListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        binding.unbind()
+        super.onDestroyView()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        app:key="notifications_category"
-        app:title="Notifications">
+        android:key="notifications_category"
+        android:title="Notifications">
 
         <SwitchPreferenceCompat
-            app:key="notifications"
-            app:title="Enable message notifications"/>
+            android:key="notifications"
+            android:title="Enable message notifications">
+
+        </SwitchPreferenceCompat>
+
+        <EditTextPreference
+            android:defaultValue="Ask"
+            android:dialogTitle="Enter keyword to send notification"
+            android:key="keyword_search"
+            android:title="Keyword To Search"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
+    <!--
+    <PreferenceCategory
+        android:title="@string/refresh"
+        android:key="refresh_category">
 
+        <ListPreference
+            android:entries="@array/update_interval_array"
+            android:entryValues="@array/update_interval_array"
+            android:key="update_interval"
+            android:title="Update Interval"
+            app:useSimpleSummaryProvider="true" />
 
+    </PreferenceCategory>
+    -->
 </PreferenceScreen>

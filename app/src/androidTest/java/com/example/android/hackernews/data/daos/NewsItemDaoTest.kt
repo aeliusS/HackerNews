@@ -63,5 +63,7 @@ class NewsItemDaoTest {
         assertThat(childItems?.size ?: 0, equalTo(0))
     }
 
+    // TODO: test stale stories
+
     // TODO: test that bookmarked items don't get deleted
 }
