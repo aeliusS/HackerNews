@@ -13,7 +13,7 @@
         android:id="@+id/commentItemMotionLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimaryContainer"
+        android:background="?attr/colorSurfaceVariant"
         app:layoutDescription="@xml/list_item_comments_scene">
 
         <LinearLayout
@@ -35,8 +35,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/commentAuthor"
             app:layout_constraintStart_toEndOf="@id/separatorContainer"
             app:layout_constraintTop_toTopOf="@+id/commentAuthor"
-            app:srcCompat="@drawable/expand"
-            app:tint="?attr/colorOnPrimaryContainer" />
+            app:srcCompat="@drawable/rounded_arrow"
+            app:tint="?attr/colorSecondary" />
 
         <TextView
             android:id="@+id/commentAuthor"
@@ -92,10 +92,12 @@
 
         <TextView
             android:id="@+id/childCommentsNumber"
-            style="@style/TextAppearance.BodyMedium"
+            style="@style/TextAppearance.BodyMedium.Bold"
+            android:background="@drawable/rounded_corner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:padding="5dp"
             app:displayChildCount="@{newsItem.childNewsItems}"
             app:layout_constraintBottom_toBottomOf="@+id/commentArrow"
             app:layout_constraintEnd_toEndOf="parent"

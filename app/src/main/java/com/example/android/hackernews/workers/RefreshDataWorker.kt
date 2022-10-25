@@ -7,13 +7,9 @@ import androidx.preference.PreferenceManager
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.android.hackernews.data.repositories.DefaultNewsRepository
-import com.example.android.hackernews.data.repositories.NewsLocalDataSource
-import com.example.android.hackernews.di.IoDispatcher
 import com.example.android.hackernews.utils.sendNotification
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
