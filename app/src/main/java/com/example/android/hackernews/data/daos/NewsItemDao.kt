@@ -1,6 +1,7 @@
 package com.example.android.hackernews.data.daos
 
 import android.database.sqlite.SQLiteConstraintException
+import androidx.annotation.VisibleForTesting
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -34,7 +35,7 @@ interface NewsItemDao {
         }
     }
 
-    // only use to setup tests. This has performance hit for large lists
+    @VisibleForTesting
     suspend fun upsertItems(newsItems: List<NewsItem>) {
         newsItems.forEach {
             try {
@@ -45,11 +46,8 @@ interface NewsItemDao {
         }
     }
 
-    @Query("SELECT * FROM news_items WHERE id = :itemId")
-    fun getItem(itemId: Long): Flow<NewsItem>
-
-    @Query("SELECT * FROM news_items WHERE id IN (:itemIds)")
-    fun getItems(itemIds: List<Long>): Flow<List<NewsItem>>
+    @Query("SELECT id FROM news_items WHERE title LIKE '%' || :keyword || '%'")
+    suspend fun getItemIdsWithKeyword(keyword: String): List<Long>
 
     @Query(GET_CHILD_COMMENTS)
     fun getChildItems(itemId: Long): Flow<List<NewsItem>?>

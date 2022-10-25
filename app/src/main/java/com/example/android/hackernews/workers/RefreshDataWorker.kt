@@ -6,6 +6,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.preference.PreferenceManager
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.example.android.hackernews.data.NotificationData
 import com.example.android.hackernews.data.repositories.DefaultNewsRepository
 import com.example.android.hackernews.utils.sendNotification
 import dagger.assisted.Assisted
@@ -31,6 +32,7 @@ class RefreshDataWorker @AssistedInject constructor(
             newsRepository.updateTopStoriesFromRemote()
             newsRepository.removeStaleStories()
             sendNotificationForKeyword()
+
             Log.d(TAG, "finished updating in the background")
             Result.success()
         } catch (ex: Exception) {
@@ -39,14 +41,16 @@ class RefreshDataWorker @AssistedInject constructor(
         }
     }
 
-    private fun sendNotificationForKeyword() {
+    private suspend fun sendNotificationForKeyword() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val notification = sharedPreferences.getBoolean("notifications", false)
         if (!notification) return
 
         val keywordSearch = sharedPreferences.getString("keyword_search", null)
         if (keywordSearch != null) {
-            sendNotification(applicationContext, "Test")
+            val newsItems = newsRepository.getItemsWithKeyword(keywordSearch)
+            if (newsItems.isEmpty()) return
+            sendNotification(applicationContext, NotificationData(keywordSearch, newsItems.size))
         }
     }
 

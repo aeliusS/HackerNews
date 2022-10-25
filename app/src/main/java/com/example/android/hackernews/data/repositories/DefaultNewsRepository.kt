@@ -26,6 +26,9 @@ class DefaultNewsRepository @Inject constructor(
 
     suspend fun updateNewsItem(newsItem: NewsItem) = newsLocalDataSource.updateNewsItem(newsItem)
 
+    suspend fun getItemsWithKeyword(keyword: String) =
+        newsLocalDataSource.getItemsWithKeyword(keyword)
+
     @Suppress("UNCHECKED_CAST")
     suspend fun refreshNewsItem(newsItemId: Long) = withContext(ioDispatcher) {
         wrapEspressoIdlingResource {

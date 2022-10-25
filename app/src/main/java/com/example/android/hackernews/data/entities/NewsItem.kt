@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -12,7 +13,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @JsonClass(generateAdapter = true)
-@Entity(tableName = "news_items")
+@Entity(tableName = "news_items", indices = [Index(value = ["title"])])
 data class NewsItem(
     @PrimaryKey val id: Long,
     val deleted: Boolean = false,
@@ -66,11 +67,11 @@ data class NewsItem(
                         this.title == other.title &&
                         this.parts == other.parts &&
                         this.descendants == other.descendants &&
-                        this.bookmarked == other.bookmarked &&
-                        this.childNewsItems == other.childNewsItems &&
-                        this.isExpanded == other.isExpanded &&
                         this.rank == other.rank &&
-                        this.topLevelParent == other.topLevelParent
+                        this.bookmarked == other.bookmarked &&
+                        this.isExpanded == other.isExpanded &&
+                        this.topLevelParent == other.topLevelParent &&
+                        this.childNewsItems == other.childNewsItems
                 )
     }
 
@@ -90,11 +91,11 @@ data class NewsItem(
         result = 31 * result + (title?.hashCode() ?: 0)
         result = 31 * result + (parts?.hashCode() ?: 0)
         result = 31 * result + (descendants ?: 0)
-        result = 31 * result + bookmarked.hashCode()
-        result = 31 * result + (childNewsItems?.hashCode() ?: 0)
-        result = 31 * result + isExpanded.hashCode()
         result = 31 * result + rank.hashCode()
+        result = 31 * result + bookmarked.hashCode()
+        result = 31 * result + isExpanded.hashCode()
         result = 31 * result + topLevelParent.hashCode()
+        result = 31 * result + (childNewsItems?.hashCode() ?: 0)
         return result
     }
 }

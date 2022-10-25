@@ -22,6 +22,8 @@
 
     <string name="api_error_message">Could not refresh data</string>
     <string name="try_again">Try Again</string>
-    <string name="update_in_progress">Update already in progress...</string>
+    <string name="update_in_progress">Update in progress…</string>
+    <string name="notification_title">Found news you are interested in</string>
+    <string name="notification_content">There are %1$d stories with \'%2$s\' in the title!</string>
     <string name="notification_permission_denied">Notification Permission denied. Enable in settings</string>
 </resources>

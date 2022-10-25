@@ -11,12 +11,13 @@ import androidx.core.app.NotificationCompat
 import com.example.android.hackernews.BuildConfig
 import com.example.android.hackernews.R
 import com.example.android.hackernews.MainActivity
+import com.example.android.hackernews.data.NotificationData
 
 private const val NOTIFICATION_CHANNEL_ID = BuildConfig.APPLICATION_ID + ".channel"
 private const val NOTIFICATION_ID = 0
 private fun getUniqueId() = ((System.currentTimeMillis() % 10000).toInt())
 
-fun sendNotification(context: Context, data: String) {
+fun sendNotification(context: Context, data: NotificationData) {
     val notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -48,8 +49,14 @@ fun sendNotification(context: Context, data: String) {
 
     val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher)
-        .setContentTitle("Content found")
-        .setContentText(data)
+        .setContentTitle(context.getString(R.string.notification_title))
+        .setContentText(
+            context.getString(
+                R.string.notification_content,
+                data.quantity,
+                data.keyword
+            )
+        )
         .setContentIntent(pendingIntent)
         .setAutoCancel(true)
         .build()

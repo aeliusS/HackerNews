@@ -66,11 +66,6 @@ class NewsListFragment : Fragment() {
         binding.newsListRecyclerView.adapter = adapter
 
         viewModel.apiStatus.observe(viewLifecycleOwner) { handleApiStatus(it) }
-
-        // TODO: remove after testing
-        viewModel.topStories.observe(viewLifecycleOwner) {
-            Log.d(TAG, "Number of top stories: ${it.size}")
-        }
     }
 
     private fun setupMenuOptions() {
