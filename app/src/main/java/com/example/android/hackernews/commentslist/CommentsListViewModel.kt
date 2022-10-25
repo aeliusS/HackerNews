@@ -40,7 +40,7 @@ class CommentsListViewModel @Inject internal constructor(
 
     suspend fun updateHeaderAndComments() = wrapApiStatusError(_apiStatus) {
         headerItem.value?.let {
-            newsRepository.refreshNewsItem(it.id)
+            newsRepository.refreshNewsItem(it.id, it.rank)
             newsRepository.getChildrenFromRemote(it)
         }
     }

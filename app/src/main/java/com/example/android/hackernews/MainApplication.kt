@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.preference.PreferenceManager
 import androidx.work.*
+import com.example.android.hackernews.utils.setupRecurringWork
 import com.example.android.hackernews.workers.RefreshDataWorker
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
@@ -34,31 +35,7 @@ class MainApplication : Application(), Configuration.Provider {
     }
 
     private fun delayedInit() = applicationScope.launch {
-        setupRecurringWork()
+        setupRecurringWork(applicationContext)
     }
 
-    private fun setupRecurringWork() {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        var updateInterval = sharedPreferences.getString("update_interval", "1440")?.toLongOrNull()
-        if (updateInterval == null) updateInterval = 1440
-
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.UNMETERED)
-            .setRequiresBatteryNotLow(true)
-            .build()
-
-        val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWorker>(
-            updateInterval,
-            TimeUnit.MINUTES
-        )
-            .setConstraints(constraints)
-            .setInitialDelay(updateInterval, TimeUnit.MINUTES)
-            .build()
-
-        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
-            RefreshDataWorker.TAG,
-            ExistingPeriodicWorkPolicy.REPLACE,
-            repeatingRequest
-        )
-    }
 }

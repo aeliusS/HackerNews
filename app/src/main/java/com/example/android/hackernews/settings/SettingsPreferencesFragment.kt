@@ -12,11 +12,13 @@ import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.example.android.hackernews.R
 import com.example.android.hackernews.BuildConfig
+import com.example.android.hackernews.utils.setupRecurringWork
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,11 +30,20 @@ class SettingsPreferencesFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        Log.d(TAG, "Reached settings fragment")
+
+        findPreference<ListPreference>("update_interval")?.onPreferenceChangeListener =
+            updateRefreshInterval
+
         findPreference<SwitchPreferenceCompat>("notifications")?.apply {
             onPreferenceChangeListener = updateNotifications
             findPreference<EditTextPreference>("keyword_search")?.isVisible = isChecked
         }
+    }
+
+    private val updateRefreshInterval = Preference.OnPreferenceChangeListener { _, newValue ->
+        Log.d(TAG, "New update interval is $newValue")
+        setupRecurringWork(requireContext(), true)
+        true
     }
 
     private val updateNotifications = Preference.OnPreferenceChangeListener { _, newValue ->

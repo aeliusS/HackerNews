@@ -30,12 +30,14 @@ class DefaultNewsRepository @Inject constructor(
         newsLocalDataSource.getItemsWithKeyword(keyword)
 
     @Suppress("UNCHECKED_CAST")
-    suspend fun refreshNewsItem(newsItemId: Long) = withContext(ioDispatcher) {
+    suspend fun refreshNewsItem(newsItemId: Long, rank: Int) = withContext(ioDispatcher) {
         wrapEspressoIdlingResource {
             when (val result = newsRemoteDataSource.getNewsItem(newsItemId)) {
                 is Result.Success<*> -> {
                     val newsItem = result.data as NewsItem
-                    newsLocalDataSource.upsertNewsItemPartial(newsItem)
+                    newsLocalDataSource.upsertNewsItemPartial(newsItem.apply {
+                        this.rank = rank
+                    })
                 }
                 is Result.Error -> Log.e(TAG, "Error getting news item: $newsItemId")
             }
