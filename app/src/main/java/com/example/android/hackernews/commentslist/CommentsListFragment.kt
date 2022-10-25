@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.android.hackernews.R
 import com.example.android.hackernews.commentslist.adapter.ExpandableComment
 import com.example.android.hackernews.data.ApiStatus
@@ -83,7 +84,7 @@ class CommentsListFragment : Fragment() {
                     }
                     else -> false
                 }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        }, viewLifecycleOwner, Lifecycle.State.STARTED)
     }
 
     private fun getHeaderAndComments() {
@@ -129,7 +130,8 @@ class CommentsListFragment : Fragment() {
                 .show()
         } else {
             // TODO: why is the id refresh_news not refresh_comments
-            val refreshIcon = requireActivity().findViewById<View?>(R.id.refresh_news) ?: return
+            val refreshIcon = requireActivity().findViewById<View?>(R.id.refresh_comments)
+                ?: requireActivity().findViewById(R.id.refresh_news) ?: return
             val animator = ObjectAnimator.ofFloat(refreshIcon, View.ROTATION, -360f, 0f)
             animator.duration = 1000
             animator.addListener(object : AnimatorListenerAdapter() {
