@@ -23,6 +23,7 @@ import com.example.android.hackernews.databinding.FragmentCommentsBinding
 import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.OnItemClickListener
+import com.xwray.groupie.OnItemLongClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -54,7 +55,7 @@ class CommentsListFragment : Fragment() {
         getHeaderAndComments()
 
         val adapter = GroupieAdapter().apply {
-            setOnItemClickListener(onCommentClickListener)
+            setOnItemLongClickListener(onCommentClickListener)
         }
         binding.commentsListRecyclerView.adapter = adapter
 
@@ -95,11 +96,13 @@ class CommentsListFragment : Fragment() {
         }
     }
 
-    private val onCommentClickListener = OnItemClickListener { item, _ ->
+    private val onCommentClickListener = OnItemLongClickListener { item, _ ->
         if (item is ExpandableComment) {
-            Log.d(TAG, "Clicked on comment: ${item.newsItem.id}")
+            Log.d(TAG, "Long clicked on comment: ${item.newsItem.id}")
             viewModel.toggleIsExpanded(newsItem = item.newsItem)
+            return@OnItemLongClickListener true
         }
+        false
     }
 
     private fun openWebPage(url: String) {

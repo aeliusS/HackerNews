@@ -122,10 +122,11 @@ fun displayHTMLOrBlank(textView: TextView, text: String?, isExpanded: Boolean?) 
 @BindingAdapter("displayChildCount")
 fun displayChildCount(textView: TextView, childNewsItems: List<NewsItem?>?) {
     if (childNewsItems.isNullOrEmpty()) {
-        textView.text = "0"
+        textView.text = "1"
         return
     }
     childNewsItems.let {
-        textView.text = "${it.size}"
+        // account for the parent in the display count
+        textView.text = "${it.size.plus(1)}"
     }
 }

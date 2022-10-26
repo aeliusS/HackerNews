@@ -26,14 +26,10 @@ class ExpandableComment constructor(
         addingDepthView(viewBinding)
 
         viewBinding.newsItem = newsItem
-        if (newsItem.isExpanded) {
+        if (newsItem.isExpanded)
             viewBinding.commentItemMotionLayout.transitionToStart()
-            // viewBinding.commentText.visibility = View.VISIBLE
-        }
-        else {
+        else
             viewBinding.commentItemMotionLayout.transitionToEnd()
-            // viewBinding.commentText.visibility = View.GONE
-        }
 
         viewBinding.executePendingBindings()
     }
