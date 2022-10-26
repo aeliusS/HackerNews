@@ -1,6 +1,7 @@
 package com.example.android.hackernews.utils
 
 import android.content.Context
+import android.util.Log
 import androidx.preference.PreferenceManager
 import androidx.work.*
 import com.example.android.hackernews.workers.RefreshDataWorker
@@ -10,6 +11,8 @@ fun setupRecurringWork(context: Context, replace: Boolean = false) {
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     var updateInterval = sharedPreferences.getString("update_interval", "1440")?.toLongOrNull()
     if (updateInterval == null) updateInterval = 1440
+
+    Log.d("setupRecurringWork", "update interval is $updateInterval")
 
     val constraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.UNMETERED)

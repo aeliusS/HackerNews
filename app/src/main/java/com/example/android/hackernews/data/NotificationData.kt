@@ -4,4 +4,5 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class NotificationData(val keyword: String, val quantity: Int) : Parcelable
+data class NotificationData(val title: String, val content: String, val error: Boolean = false) :
+    Parcelable

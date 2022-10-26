@@ -42,21 +42,15 @@ fun sendNotification(context: Context, data: NotificationData) {
     } else PendingIntent.FLAG_UPDATE_CURRENT
     val pendingIntent = PendingIntent.getActivity(
         context.applicationContext,
-        NOTIFICATION_ID,
+        if (data.error) getUniqueId() else NOTIFICATION_ID,
         intent,
         flags
     )
 
     val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
         .setSmallIcon(R.mipmap.ic_launcher)
-        .setContentTitle(context.getString(R.string.notification_title))
-        .setContentText(
-            context.getString(
-                R.string.notification_content,
-                data.quantity,
-                data.keyword
-            )
-        )
+        .setContentTitle(data.title)
+        .setContentText(data.content)
         .setContentIntent(pendingIntent)
         .setAutoCancel(true)
         .build()
