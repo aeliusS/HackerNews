@@ -113,6 +113,7 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginBottom="32dp"
             android:autoLink="web"
+            android:textIsSelectable="true"
             app:displayHTML="@{newsItem.text}"
             app:displayIfNotNull="@{newsItem.text}"
             app:isExpanded="@{true}"
