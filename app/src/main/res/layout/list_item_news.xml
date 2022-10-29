@@ -41,12 +41,11 @@
                 android:layout_marginTop="@dimen/margin_normal"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:onClick="@{() -> clickListener.onClick(newsItem, clickType.URL)}"
-                app:displayHTML="@{newsItem.title}"
-                app:isExpanded="@{true}"
+                app:displayTitleWithRank="@{newsItem}"
                 app:layout_constraintEnd_toStartOf="@+id/commentImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Layout Breakouts with CSS Grid" />
+                tools:text="1. Layout Breakouts with CSS Grid" />
 
             <TextView
                 android:id="@+id/urlText"

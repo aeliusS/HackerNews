@@ -79,7 +79,7 @@ interface NewsItemDao {
             SELECT nt.* FROM news_items as nt
             INNER JOIN top_stories AS top ON top.item_id = nt.id
             WHERE nt.dead IS null OR nt.dead IS FALSE
-            ORDER BY nt.rank ASC
+            ORDER BY top.rank ASC
         """
 
         private const val NEWS_ITEMS_NEW_STORIES = """

@@ -99,6 +99,21 @@ fun displayTime(textView: TextView, timeUTC: Long?) {
     )
 }
 
+@BindingAdapter("displayTitleWithRank")
+fun displayTitleWithRank(textView: TextView, newsItem: NewsItem?) {
+    newsItem?.let {
+        textView.text = if (it.title == null) "~NO DATA~"
+        else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                "${it.rank + 1}. " + Html.fromHtml(it.title, Html.FROM_HTML_MODE_LEGACY).trim()
+            } else {
+                "${it.rank}. " + HtmlCompat.fromHtml(it.title, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    .trim()
+            }
+        }
+    }
+}
+
 @BindingAdapter("displayHTML", "isExpanded")
 fun displayHTMLOrBlank(textView: TextView, text: String?, isExpanded: Boolean?) {
     // don't display text if it is not expanded
